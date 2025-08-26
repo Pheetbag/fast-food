@@ -1,38 +1,41 @@
-function Cicle() {
-  this.current = 0;
-  this.currentDeca = 0;
-  this.currentHecta = 0;
-  this.currentGlobal = [this.current, this.currentDeca, this.currentHecta];
+import { clientsEngine } from "./client";
 
-  this.controller;
-  this.state = "on";
+export class Cicle {
+  current: number = 0;
+  currentDeca: number = 0;
+  currentHecta: number = 0;
+  currentGlobal: number[] = [this.current, this.currentDeca, this.currentHecta];
+  controller: ReturnType<typeof setInterval> | undefined;
+  state: "on" | "off" = "on";
 
-  Cicle.prototype.update = function () {
+  update(): void {
     //define a new cicle execution
     this.current++;
     this.currentDeca = Math.trunc(this.current / 10);
     this.currentHecta = Math.trunc(this.current / 1000);
     this.currentGlobal = [this.current, this.currentDeca, this.currentHecta];
-  };
+  }
 
-  Cicle.prototype.action = function (action) {
-    if (action == "clear") {
+  action(action: "clear" | "set"): void {
+    if (action === "clear") {
       this.clearCicle();
     }
-    if (action == "set") {
+    if (action === "set") {
       this.setCicle();
     }
-  };
+  }
 
-  Cicle.prototype.setCicle = function () {
+  setCicle(): void {
     this.controller = setInterval(cicleUpdate, 100);
     this.state = "on";
-  };
+  }
 
-  Cicle.prototype.clearCicle = function () {
-    clearInterval(this.controller);
+  clearCicle(): void {
+    if (this.controller) {
+      clearInterval(this.controller);
+    }
     this.state = "off";
-  };
+  }
 }
 
 function cicleUpdate() {
@@ -77,7 +80,9 @@ function cicleUpdate() {
 
   //Generate clients
 
-  if (client.evaluate() == true) {
-    client.new();
+  if (clientsEngine.evaluate()) {
+    clientsEngine.new();
   }
 }
+
+export const cicleEngine = new Cicle();

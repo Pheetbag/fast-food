@@ -6,6 +6,8 @@
  * objects.
  */
 
+declare var config: any;
+
 declare var game: any;
 declare var cicle: any;
 declare var player: any;

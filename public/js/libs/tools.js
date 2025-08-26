@@ -1,3 +1,4 @@
+/** @deprecated Please for the new codebase use the tools functions created in typescript */
 var tools = new Object();
 
 tools.random = function (a, b) {

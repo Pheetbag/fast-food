@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc --noEmit --watch",
+    "lint": "eslint . --no-warn-ignored",
     "dev": "vite",
     "build": "vite build",
     "prepare": "husky install"
@@ -34,6 +35,6 @@
   },
   "lint-staged": {
     "*.css": "prettier --write",
-    "*.{js,ts,mjs}": ["prettier --write", "eslint --fix"]
+    "*.{js,ts,mjs}": ["prettier --write", "eslint --fix --no-warn-ignored"]
   }
 }

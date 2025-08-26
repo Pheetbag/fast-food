@@ -3,9 +3,7 @@
 
 //We initialize the core objects of the game.
 game = new Game();
-cicle = new Cicle();
 player = new Player();
 scene = new Scene();
 paint = new Paint();
 render = new Render();
-client = new ClientController();
