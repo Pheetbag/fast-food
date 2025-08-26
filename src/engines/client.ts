@@ -4,32 +4,40 @@ import { randomNumber } from "../tools";
 
 export class ClientController {
     quantity: number = 0;
-    //totalQuantity: number;
-    lastGeneration: number = 0;
-    list: (Client | null)[] = [null, null, null, null];
+    // the accumulated delta since the last time a client was generated
+    deltaSinceLastGenerationAttempt: number = 0;
+    list: Client[] = [];
 
     new() {
-        //create a new client after making the evaluation, this is activated by the game cicle.
+        const client = new Client();
+        this.list.push(client);
 
-        this.list[this.quantity] = new Client();
         this.quantity++;
-        this.lastGeneration = cicle.current;
-        console.log(this.list[this.quantity - 1]);
+        this.deltaSinceLastGenerationAttempt = 0;
+
+        console.log(client);
+
+        return client;
     }
 
-    evaluate(): boolean {
+    evaluate(delta: number): boolean {
         if (this.quantity >= config.clientMaxQuantity) {
             return false;
         }
 
-        if (cicle.current - this.lastGeneration < config.clientTimeSpacing) {
+        this.deltaSinceLastGenerationAttempt += delta;
+
+        if (
+            this.deltaSinceLastGenerationAttempt < config.clientMinTimeSpacing
+        ) {
             return false;
         }
+
         if (
-            randomNumber(0, 100) > config.clientRandomChance &&
-            config.clientRandom == true
+            config.clientRandom == true &&
+            randomNumber(0, 100) > config.clientRandomChance
         ) {
-            this.lastGeneration = cicle.current;
+            this.deltaSinceLastGenerationAttempt = 0;
             return false;
         }
 
