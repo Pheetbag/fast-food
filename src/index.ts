@@ -19,7 +19,7 @@ assets.set(ff.defaultAsset);
 
 //------- WE SET ITEMS IN INVENTORY
 for (let i = 0; i < 20; i++) {
-  scene.set("menu", game.assets[0].itemSet[i]);
+    scene.set("menu", game.assets[0].itemSet[i]);
 }
 
 //setup all the scene, including reactions, and objects
