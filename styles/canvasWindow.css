@@ -1,572 +1,577 @@
 /* CANVAS WINDOW FORMATING */
 #windowCanvas {
-  background: radial-gradient(ellipse at center, #278eb3 10%, #00425c 95%);
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
+    background: radial-gradient(ellipse at center, #278eb3 10%, #00425c 95%);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .canvasHeader {
-  height: 75px;
-  display: flex;
+    height: 75px;
+    display: flex;
 }
 
 .canvasHeader > * {
-  flex-grow: 1;
+    flex-grow: 1;
 }
 
 .headerLeft {
-  width: 33.3%;
-  padding-left: 15px;
+    width: 33.3%;
+    padding-left: 15px;
 }
 
 .headerRight {
-  width: 33.3%;
-  padding-right: 15px;
+    width: 33.3%;
+    padding-right: 15px;
 }
 
 .ff-gamePrint-hearts,
 .ff-gamePrint-stars {
-  padding-right: 40%;
-  display: flex;
-  width: 100%;
-  height: 50%;
+    padding-right: 40%;
+    display: flex;
+    width: 100%;
+    height: 50%;
 }
 
 .ff-gamePrint-hearts > div {
-  flex-grow: 0.5;
-  background-image: url(/assets/gameGeneral_ico/heart_dead.png);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 25px 25px;
-  min-width: 30px;
-  height: 30px;
-  margin-right: 5px;
+    flex-grow: 0.5;
+    background-image: url(/assets/gameGeneral_ico/heart_dead.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 25px 25px;
+    min-width: 30px;
+    height: 30px;
+    margin-right: 5px;
 }
 
 .ff-gamePrint-stars > div {
-  flex-grow: 1;
-  background-image: url(/assets/gameGeneral_ico/star0.png);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 25px 25px;
-  min-width: 30px;
-  height: 30px;
-  margin-right: 5px;
+    flex-grow: 1;
+    background-image: url(/assets/gameGeneral_ico/star0.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 25px 25px;
+    min-width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+
+.ff-gamePrint-fps {
+    display: flex;
+    align-items: center;
 }
 
 .headerCenter {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .ff-gamePrint-name {
-  width: 33.3%;
-  font-family: "Roboto", sans-serif;
-  font-weight: bold;
-  font-size: 20px;
+    width: 33.3%;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    font-size: 20px;
 
-  text-align: center;
+    text-align: center;
 
-  background-image: url(/assets/various/titleBanner.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+    background-image: url(/assets/various/titleBanner.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 
-  height: 100%;
-  flex-grow: 1;
+    height: 100%;
+    flex-grow: 1;
 
-  padding-top: 25px;
+    padding-top: 25px;
 }
 
 .printOptionsContainer,
 .printMoneyContainer {
-  width: 100%;
-  height: 50%;
-  display: flex;
-  justify-content: flex-end;
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .ff-gamePrint-money {
-  height: 30px;
-  display: flex;
-  align-items: center;
+    height: 30px;
+    display: flex;
+    align-items: center;
 }
 
 .ff-gamePrint-money > div {
-  font-size: 25px;
-  font-family: sans-serif;
-  font-weight: bold;
+    font-size: 25px;
+    font-family: sans-serif;
+    font-weight: bold;
 
-  order: 2;
+    order: 2;
 
-  height: 100%;
+    height: 100%;
 }
 
 .ff-gamePrint-money > span {
-  width: 30px;
-  height: 100%;
+    width: 30px;
+    height: 100%;
 
-  order: 3;
+    order: 3;
 
-  background-image: url(/assets/ui_ico/coin.png);
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
+    background-image: url(/assets/ui_ico/coin.png);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .ff-gamePrint-money.rtl > span {
-  order: 1;
+    order: 1;
 }
 
 .printOptionsContainer > div {
-  margin-top: 5px;
-  height: 30px;
-  margin-left: 5px;
+    margin-top: 5px;
+    height: 30px;
+    margin-left: 5px;
 }
 
 /* GAME TABLE ----------------------------------------------- */
 
 .canvasBody {
-  align-items: center;
+    align-items: center;
 
-  flex-grow: 1;
+    flex-grow: 1;
 
-  display: flex;
-  width: 100%;
+    display: flex;
+    width: 100%;
 
-  justify-content: space-around;
+    justify-content: space-around;
 }
 
 .canvasElement {
-  width: 25%;
-  min-width: 200px;
-  max-width: 450px;
+    width: 25%;
+    min-width: 200px;
+    max-width: 450px;
 
-  height: 400px;
+    height: 400px;
 }
 
 .canvasMenu {
-  background: radial-gradient(
-    ellipse at center,
-    rgba(21, 25, 36, 0.84) 0%,
-    rgba(21, 25, 36, 0.93) 100%
-  );
+    background: radial-gradient(
+        ellipse at center,
+        rgba(21, 25, 36, 0.84) 0%,
+        rgba(21, 25, 36, 0.93) 100%
+    );
 
-  border-radius: 8px;
-  border-top: 5px solid rgb(16, 76, 126);
+    border-radius: 8px;
+    border-top: 5px solid rgb(16, 76, 126);
 }
 
 .menu-container {
-  width: 100%;
-  height: 90%;
+    width: 100%;
+    height: 90%;
 
-  display: flex;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
 
-  justify-content: space-around;
-  align-items: center;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .ff-gameMenu-hand {
-  height: 30px;
-  width: 85%;
-  background-color: rgba(255, 255, 255, 0.5);
-  display: flex;
+    height: 30px;
+    width: 85%;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
 
-  justify-content: center;
-  align-items: center;
+    justify-content: center;
+    align-items: center;
 
-  border-radius: 10px;
+    border-radius: 10px;
 }
 
 .ff-gameMenu-hand > div {
-  height: 30px;
-  width: 30px;
-  background-position: center;
-  background-size: 75%;
-  background-repeat: no-repeat;
+    height: 30px;
+    width: 30px;
+    background-position: center;
+    background-size: 75%;
+    background-repeat: no-repeat;
 }
 
 .ff-gameMenu-slot {
-  width: 45px;
-  height: 45px;
-  display: flex;
-  justify-content: space-around;
-  flex-basis: 25%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: space-around;
+    flex-basis: 25%;
 }
 
 .ff-gameMenu-slot:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .ff-gameMenu-slot:hover > .inventory-item {
-  background-color: rgba(175, 171, 171, 0.25);
+    background-color: rgba(175, 171, 171, 0.25);
 }
 
 .ff-gameMenu-slot:active > div {
-  background-color: rgba(175, 171, 171, 0.5);
-  background-size: 75%;
+    background-color: rgba(175, 171, 171, 0.5);
+    background-size: 75%;
 }
 
 .ff-gameMenu-slot.selected > div {
-  background-color: rgba(255, 255, 255, 0.7);
-  background-size: 70%;
+    background-color: rgba(255, 255, 255, 0.7);
+    background-size: 70%;
 }
 
 .ff-gameMenu-slot > div {
-  background-color: rgba(0, 0, 0, 0.25);
-  width: 45px;
-  height: 45px;
+    background-color: rgba(0, 0, 0, 0.25);
+    width: 45px;
+    height: 45px;
 
-  position: relative;
+    position: relative;
 
-  border-radius: 7px;
-  border: 2px solid rgb(64, 64, 64);
+    border-radius: 7px;
+    border: 2px solid rgb(64, 64, 64);
 
-  background-position: center;
-  background-size: 90%;
-  background-repeat: no-repeat;
+    background-position: center;
+    background-size: 90%;
+    background-repeat: no-repeat;
 }
 
 .inventory-optionsBox {
-  width: 100%;
-  height: 10%;
+    width: 100%;
+    height: 10%;
 
-  display: flex;
+    display: flex;
 }
 
 .inventory-btnDelete {
-  border-radius: 0 0 6px 6px;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(204, 75, 76);
-  background-image: url(/assets/gameGeneral_ico/trash.png);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 30px;
+    border-radius: 0 0 6px 6px;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(204, 75, 76);
+    background-image: url(/assets/gameGeneral_ico/trash.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 30px;
 }
 
 .inventory-btnDelete:hover {
-  background-color: rgb(215, 111, 111);
-  cursor: pointer;
+    background-color: rgb(215, 111, 111);
+    cursor: pointer;
 }
 
 .inventory-btnDelete:active {
-  background-color: white;
-  background-size: 25px;
+    background-color: white;
+    background-size: 25px;
 }
 
 .inventory-btnMenu {
-  width: 50%;
-  height: 100%;
-  background-color: rgb(51, 125, 185);
-  background-image: url(/assets/gameGeneral_ico/menu.png);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 30px;
+    width: 50%;
+    height: 100%;
+    background-color: rgb(51, 125, 185);
+    background-image: url(/assets/gameGeneral_ico/menu.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 30px;
 }
 
 .inventory-btnMenu:hover {
-  background-color: rgb(105, 171, 224);
+    background-color: rgb(105, 171, 224);
 }
 
 .inventory-btnMenu:active,
 .inventory-btnMenu.selected {
-  background-color: white;
-  background-size: 25px;
+    background-color: white;
+    background-size: 25px;
 }
 
 .canvasTable {
-  width: 40%;
-  min-width: 270px;
+    width: 40%;
+    min-width: 270px;
 }
 
 .canvasTable {
-  display: flex;
+    display: flex;
 
-  flex-wrap: wrap;
+    flex-wrap: wrap;
 }
 
 .canvasTableTopContainer {
-  height: 85%;
-  width: 100%;
+    height: 85%;
+    width: 100%;
 
-  display: flex;
+    display: flex;
 }
 
 .canvasTable .table-SelectBox {
-  overflow: hidden;
+    overflow: hidden;
 
-  height: 100%;
-  width: 20%;
-  min-width: 60px;
+    height: 100%;
+    width: 20%;
+    min-width: 60px;
 
-  border-radius: 15px;
-  border: 3px solid rgb(61, 28, 5);
-  border-bottom-width: 8px;
+    border-radius: 15px;
+    border: 3px solid rgb(61, 28, 5);
+    border-bottom-width: 8px;
 
-  background-image: url(/assets/various/bgtable.png);
-  background-size: cover;
+    background-image: url(/assets/various/bgtable.png);
+    background-size: cover;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .table-SelectBoxOpacity {
-  height: 100%;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .tableSelecter {
-  width: 100%;
-  height: 25%;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+    width: 100%;
+    height: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .tableSelecter:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .tableSelecter:hover > .tableSelecterIco {
-  background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .tableSelecter:active > .tableSelecterIco {
-  background-size: 65%;
+    background-size: 65%;
 }
 
 .tableSelecterIco {
-  border-radius: 13px;
-  background-size: 80%;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-width: 60px;
-  min-height: 60px;
+    border-radius: 13px;
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-width: 60px;
+    min-height: 60px;
 }
 
 .canvasTable .table-ClientBox {
-  width: 90%;
-  height: 100%;
+    width: 90%;
+    height: 100%;
 }
 
 .tableClient {
-  display: flex;
+    display: flex;
 
-  visibility: hidden;
+    visibility: hidden;
 
-  width: 100%;
-  height: 25%;
+    width: 100%;
+    height: 25%;
 
-  align-items: center;
+    align-items: center;
 }
 
 .tableClientPatience {
-  height: 60px;
-  min-width: 13px;
-  background-color: rgba(0, 0, 0, 0.75);
-  display: flex;
-  align-items: flex-end;
+    height: 60px;
+    min-width: 13px;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: flex-end;
 
-  border-radius: 3px;
-  overflow: hidden;
+    border-radius: 3px;
+    overflow: hidden;
 
-  margin: 0 5px;
+    margin: 0 5px;
 }
 
 .tableClientPatience > .tableClientPatienceIndicator {
-  width: 100%;
-  height: 100%;
-  background-color: white;
+    width: 100%;
+    height: 100%;
+    background-color: white;
 }
 
 .dangerPatience .tableClientPatience {
-  background-color: rgb(210, 80, 58);
+    background-color: rgb(210, 80, 58);
 }
 .dangerPatience .tableClientPatienceIndicator {
-  background-color: white;
+    background-color: white;
 }
 .fullPatience .tableClientPatienceIndicator {
-  background-color: rgb(0, 176, 240);
+    background-color: rgb(0, 176, 240);
 }
 .mediumPatience .tableClientPatienceIndicator {
-  background-color: rgb(15, 161, 102);
+    background-color: rgb(15, 161, 102);
 }
 .lowPatience .tableClientPatienceIndicator {
-  background-color: rgb(210, 80, 58);
+    background-color: rgb(210, 80, 58);
 }
 .noPatience .tableClientPatienceIndicator {
-  display: none;
+    display: none;
 }
 .noPatience .tableClientPatience {
-  background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 .frezzePatience .tableClientPatienceIndicator {
-  background-color: rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255);
 }
 .frezzeOutPatience .tableClientPatience {
-  background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 .frezzeOutPatience .tableClientPatienceIndicator {
-  background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 .tableClientFace {
-  border-radius: 50%;
-  min-width: 55px;
-  height: 55px;
+    border-radius: 50%;
+    min-width: 55px;
+    height: 55px;
 
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .tableClientWishContainer {
-  height: 100%;
-  min-width: 30px;
-  display: flex;
-  align-items: center;
+    height: 100%;
+    min-width: 30px;
+    display: flex;
+    align-items: center;
 
-  padding-left: 3px;
+    padding-left: 3px;
 }
 
 .info .wishArrow {
-  border-right-color: rgb(25, 117, 193);
+    border-right-color: rgb(25, 117, 193);
 }
 .info .wishList {
-  background-color: rgb(25, 117, 193);
+    background-color: rgb(25, 117, 193);
 }
 
 .warn .wishArrow {
-  border-right-color: rgb(210, 80, 58);
+    border-right-color: rgb(210, 80, 58);
 }
 .warn .wishList {
-  background-color: rgb(210, 80, 58);
+    background-color: rgb(210, 80, 58);
 }
 
 .cash .wishArrow {
-  border-right-color: rgb(60, 180, 134);
+    border-right-color: rgb(60, 180, 134);
 }
 .cash .wishList {
-  background-color: rgb(60, 180, 134);
+    background-color: rgb(60, 180, 134);
 }
 .cash .tableClientFace,
 .cash .tableClientPatience {
-  display: none;
+    display: none;
 }
 
 .wishArrow {
-  width: 0;
-  height: 0;
-  border-right: 9px solid white;
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
+    width: 0;
+    height: 0;
+    border-right: 9px solid white;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
 }
 
 .wishList {
-  background-color: white;
-  min-width: 50px;
-  min-height: 40px;
+    background-color: white;
+    min-width: 50px;
+    min-height: 40px;
 
-  border-radius: 7px;
+    border-radius: 7px;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
 
-  flex-wrap: wrap;
+    flex-wrap: wrap;
 
-  padding: 0 5px;
+    padding: 0 5px;
 
-  transition: width 1s;
+    transition: width 1s;
 }
 
 .wishList > div {
-  width: 30px;
-  height: 30px;
-  margin: 0 1px;
+    width: 30px;
+    height: 30px;
+    margin: 0 1px;
 
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .table-SafeContainer {
-  min-width: 100%;
-  height: 15%;
+    min-width: 100%;
+    height: 15%;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
 }
 
 .tableSafeSlot {
-  width: 50px;
-  height: 50px;
+    width: 50px;
+    height: 50px;
 
-  background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.7);
 
-  border: 3px solid rgb(64, 64, 64);
-  border-radius: 10px;
+    border: 3px solid rgb(64, 64, 64);
+    border-radius: 10px;
 }
 
 .tableSafeSlot:hover {
-  background-color: rgba(64, 64, 64, 0.6);
-  cursor: pointer;
+    background-color: rgba(64, 64, 64, 0.6);
+    cursor: pointer;
 }
 
 .tableSafeSlot:active {
-  background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 .tableSafeSlot.consumable {
-  border: 3px solid rgb(255, 192, 0);
+    border: 3px solid rgb(255, 192, 0);
 }
 .tableSafeSlot.consumable:hover {
-  background-color: rgba(255, 192, 0, 0.5);
+    background-color: rgba(255, 192, 0, 0.5);
 }
 
 .tableSafeSlot.consumable:active {
-  background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 .tableSafeSlot.pasive {
-  border: 3px solid rgb(112, 48, 160);
+    border: 3px solid rgb(112, 48, 160);
 }
 
 .tableSafeSlot.pasive:hover {
-  background-color: rgba(112, 48, 160, 0.5);
+    background-color: rgba(112, 48, 160, 0.5);
 }
 
 .tableSafeSlot.pasive:active {
-  background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.7);
 }
 .tableSafeSlot.selected {
-  background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 .tableSafeSlot.selected:hover {
-  cursor: auto;
-  background-color: rgba(255, 255, 255, 0.7);
+    cursor: auto;
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 .showBox {
-  opacity: 0.95;
-  bottom: 15px;
-  left: 35px;
-  border: 1px solid rgb(24, 24, 24);
-  border-radius: 6px;
-  padding: 10px;
-  font-size: 13px;
-  background-color: rgba(13, 16, 24, 0.96);
-  min-width: 130px;
-  min-height: 60px;
-  position: absolute;
-  z-index: 999999;
+    opacity: 0.95;
+    bottom: 15px;
+    left: 35px;
+    border: 1px solid rgb(24, 24, 24);
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 13px;
+    background-color: rgba(13, 16, 24, 0.96);
+    min-width: 130px;
+    min-height: 60px;
+    position: absolute;
+    z-index: 999999;
 }
