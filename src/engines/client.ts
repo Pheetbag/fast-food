@@ -1,6 +1,6 @@
 //global object "client". control all client actions.
 
-import { randomNumber } from "../tools";
+import { randomNumber, uniqueId } from "../tools";
 
 export class ClientController {
     quantity: number = 0;
@@ -46,7 +46,7 @@ export class ClientController {
 }
 
 export class Client {
-    id: number;
+    id: string;
     level: number;
     state: string;
     face: unknown;
@@ -54,11 +54,14 @@ export class Client {
     wish: ClientWish;
 
     constructor() {
-        this.id = randomNumber(0, 26);
+        this.id = uniqueId();
         this.level = game.level;
         this.state = "waiting";
 
-        this.face = game.assets[config.defaultAsset].textureMap.client[this.id];
+        this.face =
+            game.assets[config.defaultAsset].textureMap.client[
+                randomNumber(0, 26)
+            ];
         this.patience = randomNumber(
             config.clientMinPatience,
             config.clientMaxPatience,

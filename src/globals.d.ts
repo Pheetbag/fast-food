@@ -19,3 +19,7 @@ declare var client: any;
 declare var assets: any;
 
 declare var ff: any;
+
+declare var gameState: any;
+
+declare var PaintBrush: any;
