@@ -4,6 +4,7 @@
 import { clientsEngine } from "./engines/client";
 import { gameLoop } from "./engines/game-loop";
 import { renderAll, createRenderable } from "./engines/render-x";
+import { applyUpdates } from "./libs/flexbones";
 
 /**
  * FIXME: This is code from the early migration of the engines to the new codebase
@@ -42,36 +43,22 @@ createRenderable(
     "clients_waiting",
     () => clientsEngine.list.map((client) => client.id),
     () => {
-        const contexts = [];
-
-        for (let i = 4; i > 0; i--) {
-            contexts.push({
-                root: paint.getContext(`ff-tableClient-${i}`, "id"),
-                face: paint.getContext(`ff-tableClient-${i}-face`, "id"),
-            });
-        }
-
         // TODO: clear out the existing contexts
 
         for (let i = 0; i < clientsEngine.list.length; i++) {
             const client = clientsEngine.list[i];
-            const context = contexts[i];
 
-            if (!client || !context) {
+            if (!client) {
                 continue;
             }
-
-            // FIXME: paint is probably not the best way of doing UI updates at this point.
-            // as we are doing full renders on every update anyway, consider directly rendering
-            // with flexbones, adding some syntatic sugar to a "style" prop that makes it easier to
-            // render css. But this mains moving flexbones to the new codebase and cleaning it up a bit.
-            const rootBrush = new PaintBrush();
-            rootBrush.visibility = "visible";
-            paint.brush(context.root, rootBrush);
-
-            const faceBrush = new PaintBrush();
-            faceBrush.backgroundImage = client.face;
-            paint.brush(context.face, faceBrush);
+            applyUpdates(
+                { style: { visibility: "visible" } },
+                `#ff-tableClient-${i + 1}`,
+            );
+            applyUpdates(
+                { style: { backgroundImage: client.face } },
+                `#ff-tableClient-${i + 1}-face`,
+            );
         }
     },
 );

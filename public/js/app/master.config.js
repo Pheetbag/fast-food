@@ -26,7 +26,7 @@ var config = {
     clientRandom: true,
 
     //Random chance of generating the client
-    clientRandomChance: 30,
+    clientRandomChance: 100,
 
     //Min quantity of wishes a client can have
     clientMinWishQuantity: null,
