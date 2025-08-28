@@ -2,124 +2,128 @@
 var ff = new Object();
 
 function Game() {
-  this.level;
+    this.level;
 
-  this.state = {
-    player: {
-      hearts: 6,
-      stars: 0,
-      money: 0,
-      name: "unknown",
-      hand: [],
-    },
+    this.state = {
+        player: {
+            hearts: 6,
+            stars: 0,
+            money: 0,
+            name: "unknown",
+            hand: [],
+        },
 
-    scene: {
-      menu: [],
-      hand: [],
-      client: [],
-    },
-  };
+        scene: {
+            menu: [],
+            hand: [],
+            client: [],
+        },
+    };
 
-  this.assets = [];
+    this.assets = [];
 
-  //TODO Is important to note that this have to be moved from here, the use of components is deprecated in the code, so now we have to create a way to refers to all components  (this is deprecated because the system now have assets for it) But right now it do not support the components or similar (also check where components are used)
+    //TODO Is important to note that this have to be moved from here, the use of components is deprecated in the code, so now we have to create a way to refers to all components  (this is deprecated because the system now have assets for it) But right now it do not support the components or similar (also check where components are used)
 
-  this.component = new Component();
+    this.component = new Component();
 
-  Game.prototype.over = function () {
-    alert("you lost");
-  };
+    Game.prototype.over = function () {
+        alert("you lost");
+    };
 }
 
 function Scene() {
-  this.menu = [];
-  this.hand = [];
+    this.menu = [];
+    this.hand = [];
 
-  this.set = function (type, value) {
-    this.menu.push(value);
-    //update the gamestate;
-    game.state.scene.menu = this.menu;
-  };
+    this.set = function (type, value) {
+        this.menu.push(value);
+        //update the gamestate;
+        game.state.scene.menu = this.menu;
+    };
 
-  this.setup = function () {
-    let xMap = [
-      { x: "div" },
-      { x: "div" },
-      { x: "div" },
-      { x: "div" },
-      { x: "div" },
-      { x: "div" },
-    ];
-    flexbones(xMap).select(".ff-gamePrint-hearts, .ff-gamePrint-stars").bind();
-
-    xMap = [{ x: "div" }, { x: "span" }];
-    flexbones(xMap).select(".ff-gamePrint-money").bind();
-
-    let reactTree = react("click").do();
-    let context = paint.getContext("ff-gameMenu-slot");
-
-    for (let i = 0; i < context.length; i++) {
-      //---CLICK
-
-      reactive("mousedown")
-        .do((rx) => {
-          //rx is the shortcut for reactive
-          player.set("hand", rx);
-          console.info(scene.menu[rx.context.dataset.id]);
-        })
-        .use(context[i])
-        .add(reactTree);
-
-      //---HOVER IN
-      reactive("mouseenter")
-        .do((rx) => {
-          //rx is the shortcut for reactive
-          let context = rx.context;
-          let showboxContext = context.children[0];
-          console.log(showboxContext);
-          console.log("showboxContext");
-          let xMap = [
-            [
-              { x: "div", class: "showBox" },
-              [{ x: "p", class: "title" }, context.dataset.name],
-              [{ x: "p", class: "desc" }, context.dataset.desc],
-              [{ x: "p", class: "cost" }, context.dataset.cost],
-              [{ x: "p", class: "price" }, "+" + context.dataset.price],
-            ],
-          ];
-          var foo = flexbones(xMap)
-            .sketch()
-            .contextualize([showboxContext])
-            .clear()
+    this.setup = function () {
+        let xMap = [
+            { x: "div" },
+            { x: "div" },
+            { x: "div" },
+            { x: "div" },
+            { x: "div" },
+            { x: "div" },
+        ];
+        flexbones(xMap)
+            .select(".ff-gamePrint-hearts, .ff-gamePrint-stars")
             .bind();
 
-          //TODO REMOVE THIS FROM THE REACTTREE AFTER USING IT OR CREATE A NEW REACT TREE A CLEAR IT EVERYTIME
-          reactive("mousedown")
+        xMap = [{ x: "div" }, { x: "span" }];
+        flexbones(xMap).select(".ff-gamePrint-money").bind();
+
+        let reactTree = react("click").do();
+        let context = paint.getContext("ff-gameMenu-slot");
+
+        for (let i = 0; i < context.length; i++) {
+            //---CLICK
+
+            reactive("mousedown")
+                .do((rx) => {
+                    //rx is the shortcut for reactive
+                    player.set("hand", rx);
+                    console.info(scene.menu[rx.context.dataset.id]);
+                })
+                .use(context[i])
+                .add(reactTree);
+
+            //---HOVER IN
+            reactive("mouseenter")
+                .do((rx) => {
+                    //rx is the shortcut for reactive
+                    let context = rx.context;
+                    let showboxContext = context.children[0];
+                    console.log(showboxContext);
+                    console.log("showboxContext");
+                    let xMap = [
+                        [
+                            { x: "div", class: "showBox" },
+                            [{ x: "p", class: "title" }, context.dataset.name],
+                            [{ x: "p", class: "desc" }, context.dataset.desc],
+                            [{ x: "p", class: "cost" }, context.dataset.cost],
+                            [
+                                { x: "p", class: "price" },
+                                "+" + context.dataset.price,
+                            ],
+                        ],
+                    ];
+                    var foo = flexbones(xMap)
+                        .contextualize([showboxContext])
+                        .clear()
+                        .bind();
+
+                    //TODO REMOVE THIS FROM THE REACTTREE AFTER USING IT OR CREATE A NEW REACT TREE A CLEAR IT EVERYTIME
+                    reactive("mousedown")
+                        .do((rx) => {
+                            flexbones().contextualize(context.children).clear();
+                        })
+                        .use(showboxContext.children[0])
+                        .add(reactTree);
+                })
+                .use(context[i])
+                .add(reactTree);
+
+            //---HOVER OUT
+            reactive("mouseleave")
+                .do((rx) => {
+                    let context = rx.context.children[0];
+                    flexbones().contextualize([context]).clear();
+                })
+                .use(context[i])
+                .add(reactTree);
+        }
+
+        reactive()
             .do((rx) => {
-              flexbones().contextualize(context.children).clear();
+                player.set("hand", "delete");
+                console.log("delete action");
             })
-            .use(showboxContext.children[0])
+            .use(paint.getContext("ff-gameMenu-delete")[0])
             .add(reactTree);
-        })
-        .use(context[i])
-        .add(reactTree);
-
-      //---HOVER OUT
-      reactive("mouseleave")
-        .do((rx) => {
-          let context = rx.context.children[0];
-          flexbones().contextualize([context]).clear();
-        })
-        .use(context[i])
-        .add(reactTree);
-    }
-
-    reactive()
-      .do((rx) => {
-        player.set("hand", "delete");
-        console.log("delete action");
-      })
-      .use(paint.getContext("ff-gameMenu-delete")[0])
-      .add(reactTree);
-  };
+    };
 }
