@@ -5,6 +5,7 @@ import { clientsEngine } from "./engines/client";
 import { gameLoop } from "./engines/game-loop";
 import { renderAll, createRenderable } from "./engines/render-x";
 import { applyUpdates } from "./libs/flexbones";
+import { config } from "./master.config";
 
 /**
  * FIXME: This is code from the early migration of the engines to the new codebase
@@ -12,6 +13,7 @@ import { applyUpdates } from "./libs/flexbones";
  * should be refactored and moved.
  */
 globalThis.client = clientsEngine;
+globalThis.config = config;
 
 // END OF ENGINES MIGRATION
 
@@ -104,27 +106,3 @@ gameLoop.addUpdateStep((delta) => {
 });
 
 gameLoop.start();
-
-const gameState = {
-    name: "hello",
-    lastname: "world",
-    child: {
-        name: "lorem",
-        lastname: "ipsum",
-    },
-
-    friends: [
-        { name: "friend1", age: 10 },
-        { name: "friend2", age: 20 },
-        { name: "friend3", age: 30 },
-    ],
-};
-
-const handler: ProxyHandler<typeof gameState> = {
-    set(...args): boolean {
-        console.log(args);
-        return Reflect.set(...args);
-    },
-};
-
-globalThis.gameState = new Proxy(gameState, handler);

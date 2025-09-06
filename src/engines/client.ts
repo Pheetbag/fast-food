@@ -1,6 +1,7 @@
 //global object "client". control all client actions.
 
-import { randomNumber, uniqueId } from "../tools";
+import { randomNumber, getUniqueId } from "../tools";
+import { config } from "../master.config";
 
 export class ClientController {
     quantity: number = 0;
@@ -13,6 +14,10 @@ export class ClientController {
         this.list.push(client);
 
         this.quantity++;
+        console.log(
+            "New client generated. at delta: " +
+                this.deltaSinceLastGenerationAttempt,
+        );
         this.deltaSinceLastGenerationAttempt = 0;
 
         console.log(client);
@@ -35,8 +40,9 @@ export class ClientController {
 
         if (
             config.clientRandom == true &&
-            randomNumber(0, 100) > config.clientRandomChance
+            randomNumber(1, 100) > config.clientRandomChance
         ) {
+            console.log("failed random chance");
             this.deltaSinceLastGenerationAttempt = 0;
             return false;
         }
@@ -54,7 +60,7 @@ export class Client {
     wish: ClientWish;
 
     constructor() {
-        this.id = uniqueId();
+        this.id = getUniqueId();
         this.level = game.level;
         this.state = "waiting";
 

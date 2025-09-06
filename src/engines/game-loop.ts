@@ -15,9 +15,9 @@ export class GameLoop {
     private drawSteps: IterationStepCallback[] = [];
 
     private isEnabled: boolean = false;
-    private lastFrameTimestamp: number = 0;
+    private lastFrameTimestamp: DOMHighResTimeStamp = 0;
     private maxFPS: number = 60;
-    private delta: number = 0;
+    private delta: DOMHighResTimeStamp = 0;
     private currentFrameId: number | null = null;
 
     // FPS tracking
@@ -41,13 +41,11 @@ export class GameLoop {
 
         this.trackFps(timestamp);
 
-        const deltaStep = 1000 / this.maxFPS;
-
         this.delta += timestamp - this.lastFrameTimestamp;
         this.lastFrameTimestamp = timestamp;
 
+        const deltaStep = 1000 / this.maxFPS;
         let numUpdateSteps = 0;
-
         while (this.delta >= deltaStep) {
             this.updateSteps.forEach((step) => {
                 step(deltaStep);

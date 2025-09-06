@@ -138,9 +138,8 @@ export function createPrimitive(xMap: XMap | XMapEntry): XPrimitive {
             Array.isArray(xMap) ? xMap : [xMap],
         ),
         get [xPrimitiveFragmentKey]() {
-            const xMap = this[xPrimitiveMapKey];
-
             if (!rootFragment) {
+                const xMap = this[xPrimitiveMapKey];
                 rootFragment = document.createDocumentFragment();
                 xMap.forEach((xItem) => parseXMapEntry(xItem, rootFragment));
             }
