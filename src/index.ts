@@ -15,6 +15,7 @@ import { loadRenderablesStarsBar } from "./renderables/stars-bar";
 import { menuComponent } from "./components/menu";
 import { loadRenderablesMenu } from "./renderables/menu";
 import { loadRenderablesMoney } from "./renderables/money";
+import { leadRenderablesHand } from "./renderables/hand";
 
 /**
  * FIXME: This is code from the early migration of the engines to the new codebase
@@ -49,6 +50,7 @@ loadRenderablesHealthBar();
 loadRenderablesStarsBar();
 loadRenderablesMenu();
 loadRenderablesMoney();
+leadRenderablesHand();
 
 createRenderable(
     "player_name",
@@ -89,13 +91,6 @@ gameLoop.addDrawStep(() => {
         f(null, `${Math.round(gameLoop.fps)} fps`),
         ".ff-gamePrint-fps > :nth-child(1)",
     );
-});
-
-gameLoop.addDrawStep(() => {
-    //We update the scene renders.
-    if (render.scene.checkMemory("hand", game.state.player.hand) == false) {
-        render.scene.hand(game.state.player.hand);
-    }
 });
 
 gameLoop.addDrawStep(() => {
