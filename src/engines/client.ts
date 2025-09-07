@@ -1,6 +1,9 @@
 //global object "client". control all client actions.
 
-import { randomNumber, uniqueId } from "../tools";
+import { randomNumber, getUniqueId } from "../tools";
+import { config } from "../master.config";
+import { textures } from "./textures";
+import { ClientTexturesEnum } from "../components/client";
 
 export class ClientController {
     quantity: number = 0;
@@ -13,6 +16,10 @@ export class ClientController {
         this.list.push(client);
 
         this.quantity++;
+        console.log(
+            "New client generated. at delta: " +
+                this.deltaSinceLastGenerationAttempt,
+        );
         this.deltaSinceLastGenerationAttempt = 0;
 
         console.log(client);
@@ -35,8 +42,9 @@ export class ClientController {
 
         if (
             config.clientRandom == true &&
-            randomNumber(0, 100) > config.clientRandomChance
+            randomNumber(1, 100) > config.clientRandomChance
         ) {
+            console.log("failed random chance");
             this.deltaSinceLastGenerationAttempt = 0;
             return false;
         }
@@ -49,19 +57,31 @@ export class Client {
     id: string;
     level: number;
     state: string;
-    face: unknown;
+    face: string;
     patience: number;
     wish: ClientWish;
 
     constructor() {
-        this.id = uniqueId();
+        this.id = getUniqueId();
         this.level = game.level;
         this.state = "waiting";
 
-        this.face =
-            game.assets[config.defaultAsset].textureMap.client[
-                randomNumber(0, 26)
-            ];
+        const clientTexturesKeys = Object.values(ClientTexturesEnum);
+        const randomTextureIndex = randomNumber(
+            0,
+            clientTexturesKeys.length - 1,
+        );
+        const randomTextureKey = clientTexturesKeys[randomTextureIndex];
+        const randomTexture = textures.get(randomTextureKey);
+
+        if (!randomTexture) {
+            throw new Error(
+                `Couldn't find texture path. Invalid random texture: ${randomTextureIndex} -> ${randomTextureKey}`,
+            );
+        }
+
+        this.face = randomTexture;
+
         this.patience = randomNumber(
             config.clientMinPatience,
             config.clientMaxPatience,

@@ -16,7 +16,7 @@
 // gameState can be provided as a reference or a getter function
 type RenderStateGetter<T> = T | (() => T);
 
-type RenderFn<T> = (newState: T, oldState: T) => void;
+type RenderFn<T> = (state: { newState: T; oldState: T }) => void;
 
 type Renderable<T> = {
     name: string;
@@ -73,7 +73,10 @@ function checkAndRender(renderable: Renderable<unknown>): boolean {
         JSON.stringify(currentState) !==
         JSON.stringify(renderable.renderedState)
     ) {
-        renderable.renderFn(currentState, renderable.renderedState);
+        renderable.renderFn({
+            newState: currentState,
+            oldState: renderable.renderedState,
+        });
         renderable.renderedState = structuredClone(currentState);
         return true;
     }

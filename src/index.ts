@@ -3,8 +3,13 @@
 
 import { clientsEngine } from "./engines/client";
 import { gameLoop } from "./engines/game-loop";
-import { renderAll, createRenderable } from "./engines/render-x";
-import { applyUpdates } from "./libs/flexbones";
+import { renderAll, createRenderable } from "./libs/render-x";
+import { applyUpdates, f } from "./libs/flexbones";
+import { config } from "./master.config";
+import { addTexture, textures } from "./engines/textures";
+import { clientComponent } from "./components/client";
+import { healthBarComponent } from "./components/health-bar";
+import { loadRenderablesHealthBar } from "./renderables/health-bar";
 
 /**
  * FIXME: This is code from the early migration of the engines to the new codebase
@@ -12,11 +17,18 @@ import { applyUpdates } from "./libs/flexbones";
  * should be refactored and moved.
  */
 globalThis.client = clientsEngine;
+globalThis.config = config;
+globalThis.textures = textures;
 
 // END OF ENGINES MIGRATION
 
 //initialize default assets
 assets.set(ff.defaultAsset);
+
+// initialize components textures
+// FIXME: create a proper components loader and move this there.
+clientComponent.loadTextures(addTexture);
+healthBarComponent.loadTextures(addTexture);
 
 //------- WE SET ITEMS IN INVENTORY
 for (let i = 0; i < 20; i++) {
@@ -26,15 +38,15 @@ for (let i = 0; i < 20; i++) {
 //setup all the scene, including reactions, and objects
 scene.setup();
 
+// FIXME: MOVE ME TO A BETTER PLACE
+loadRenderablesHealthBar();
+
 createRenderable(
     "player_name",
     () => game.state.player.name as string,
-    (newState) => {
-        // FIXME: we should move the contexts out of here, to save on performance
-        const context = paint.getContext("ff-gamePrint-name");
-        for (let i = 0; i < context.length; i++) {
-            context[i].innerHTML = newState;
-        }
+    ({ newState }) => {
+        // TODO:  should use direct access to low level flexbones or render should have an API?
+        applyUpdates(f(null, newState), "#ff-gamePrint-name");
     },
 );
 
@@ -52,11 +64,11 @@ createRenderable(
                 continue;
             }
             applyUpdates(
-                { style: { visibility: "visible" } },
+                f(null, { style: { visibility: "visible" } }),
                 `#ff-tableClient-${i + 1}`,
             );
             applyUpdates(
-                { style: { backgroundImage: client.face } },
+                f(null, { style: { backgroundImage: `url(${client.face})` } }),
                 `#ff-tableClient-${i + 1}-face`,
             );
         }
@@ -74,9 +86,6 @@ gameLoop.addDrawStep(() => {
 
 gameLoop.addDrawStep(() => {
     //We update the print renders.
-    if (render.print.checkMemory("hearts", game.state.player.hearts) == false) {
-        render.print.hearts(game.state.player.hearts);
-    }
     if (render.print.checkMemory("stars", game.state.player.stars) == false) {
         render.print.stars(game.state.player.stars);
     }
@@ -104,27 +113,3 @@ gameLoop.addUpdateStep((delta) => {
 });
 
 gameLoop.start();
-
-const gameState = {
-    name: "hello",
-    lastname: "world",
-    child: {
-        name: "lorem",
-        lastname: "ipsum",
-    },
-
-    friends: [
-        { name: "friend1", age: 10 },
-        { name: "friend2", age: 20 },
-        { name: "friend3", age: 30 },
-    ],
-};
-
-const handler: ProxyHandler<typeof gameState> = {
-    set(...args): boolean {
-        console.log(args);
-        return Reflect.set(...args);
-    },
-};
-
-globalThis.gameState = new Proxy(gameState, handler);

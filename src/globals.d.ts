@@ -9,12 +9,12 @@
 declare var config: any;
 
 declare var game: any;
-declare var cicle: any;
 declare var player: any;
 declare var scene: any;
 declare var paint: any;
 declare var render: any;
 declare var client: any;
+declare var textures;
 
 declare var assets: any;
 
