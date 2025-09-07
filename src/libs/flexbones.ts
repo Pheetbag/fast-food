@@ -1,98 +1,84 @@
-/**
- * Representation of an HTML element in the flexbones structure
- *
- * @property x - The tag name of the HTML element (e.g., 'div', 'span').
- * @property [_children] - An optional array of child elements or text nodes.
- * @property [style] - inline css styles definition, with support for types.
- * @property [key] - Additional attributes for the HTML element (e.g., id, src, type...).
- */
+type XElementAttrs =
+    | {
+          style?: Partial<CSSStyleDeclaration>;
+      }
+    | Record<string, string | number | boolean | undefined>;
+
+type XElementLike = string | number | boolean | XElement;
+type XElementChildren = XElementLike[];
+
+const isXElementSymbol = Symbol("isXElement");
 
 type XElement = {
-    x: string;
-    _children?: XMapEntry[];
-    style?: Partial<CSSStyleDeclaration>;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: any;
+    [isXElementSymbol]: true;
+    tagName: string;
+    children?: XElementChildren | undefined;
+    attrs?: XElementAttrs | undefined;
 };
 
-/**
- * An entry in the flexbones structure, which can be either an XElement or a primitive value that will be parsed as
- * a text node.
- */
-type XMapEntry = XElement | string | number | boolean;
+type XElementUpdates = Omit<XElement, "tagName">;
 
-/**
- * Represents an HTML tree where each entry can be parsed to some element or a text node, for elements
- * syntax refer to {@see XElement}.
- *
- * Syntax example:
- *
- * [
- *    {x: 'div'},
- *    'hello world example',
- *    {x: 'h1', _children: ['Lorem Ipsum]},
- *    {x: 'header', _children: [ {x: 'h2', class: 'text-primary'}  ]}
- * ]
- *
- * represents the html:
- *
- * <div></div>
- * hello world example
- * <h1>Lorem Ipsum</h1>
- * <header>
- *     <h2 class="text-primary"></h2>
- * </header>
- */
-type XMap = XMapEntry[];
-
-const xPrimitiveMapKey = Symbol("xMapKey");
-const xPrimitiveFragmentKey = Symbol("xFragmentKey");
-
-/**
- * The resulting flexbones primitive value after parsing an XMap into a DocumentFragment.
- *
- * this primitive serve as a template to then apply it with any of the available actions, it is reusable,
- * which means you can apply the same primitive in multiple actions without side effects.
- *
- *
- * @property xPrimitiveMapKey - The original XMap that was parsed.
- * @property xPrimitiveFragmentKey - Getter for the resulting DocumentFragment containing the created HTML elements.
- *                                   the creation fo this fragment is lazy, so it will only be created the first time
- *                                   this property is accessed.
- */
-type XPrimitive = {
-    [xPrimitiveMapKey]: XMap;
-    [xPrimitiveFragmentKey]: DocumentFragment;
-};
-
-function isXElement(entry: XMapEntry): entry is XElement {
-    return typeof entry === "object";
+export function isXElement(value: unknown): value is XElement {
+    return (
+        value !== null && typeof value === "object" && isXElementSymbol in value
+    );
 }
 
-/**
- * Receive an HtmlElement and takes care of applying all the state declared in the XElement to that
- * HtmlElement. Regardless of the element being created for the first time, or being updated.
- *
- * This means that internally it will set/remove attributes, styles, etc to match the XElement definition.
- */
-function applyXElementToHtml(
-    xMapEntry: Omit<XElement, "x">,
+function _createElementHtmlNode(
+    xElement: Exclude<XElementLike, XElement>,
+): Text;
+function _createElementHtmlNode(xElement: XElement): HTMLElement;
+function _createElementHtmlNode(xElement: XElementLike): HTMLElement | Text;
+function _createElementHtmlNode(xElement: XElementLike): HTMLElement | Text {
+    if (!isXElement(xElement)) {
+        return document.createTextNode(String(xElement));
+    }
+
+    return document.createElement(xElement.tagName);
+}
+
+function _createElementHtmlTree(xElement: XElementLike): Element | Text {
+    // it's a text node, no further steps
+    if (!isXElement(xElement)) {
+        return _createElementHtmlNode(xElement);
+    }
+
+    const elementHtml = _createElementHtmlNode(xElement);
+
+    if (xElement.attrs) {
+        _applyElementAttrsToHtml(xElement.attrs, elementHtml);
+    }
+
+    for (const child of xElement.children ?? []) {
+        const childHtml = _createElementHtmlTree(child);
+        elementHtml.appendChild(childHtml);
+    }
+
+    return elementHtml;
+}
+
+function _applyElementAttrsToHtml(
+    attrs: NonNullable<XElementUpdates["attrs"]>,
     htmlElement: HTMLElement | Element,
 ): void {
-    // apply general attributes
-    Object.entries(xMapEntry).forEach(([key, value]) => {
-        if (["x", "_children", "style"].includes(key)) return;
+    // apply general attributes that don't need special handling
+    const pureAttrs: Omit<NonNullable<XElementUpdates["attrs"]>, "style"> = {
+        ...attrs,
+        style: undefined,
+    };
 
-        if (value !== undefined) {
-            htmlElement.setAttribute(key, value);
-        } else {
+    Object.entries(pureAttrs).forEach(([key, value]) => {
+        if (key in ["style"]) return; // style is handled separately
+
+        if (value === false || value === undefined) {
             htmlElement.removeAttribute(key);
+        } else {
+            htmlElement.setAttribute(key, String(value));
         }
     });
 
-    // apply styles
-    if (xMapEntry.style) {
-        Object.entries(xMapEntry.style).forEach(([styleKey, styleValue]) => {
+    if (attrs.style) {
+        Object.entries(attrs.style).forEach(([styleKey, styleValue]) => {
             if (styleValue !== undefined) {
                 // @ts-expect-error CSSStyleDeclaration is not indexable with string for typescript
                 htmlElement.style[styleKey] = styleValue;
@@ -101,52 +87,117 @@ function applyXElementToHtml(
     }
 }
 
-function createXMapEntryHtml(xMapEntry: XMapEntry): HTMLElement | Text {
-    if (!isXElement(xMapEntry)) {
-        return document.createTextNode(String(xMapEntry));
+type XElementChildrenArg = XElementChildren | XElementLike;
+
+/**
+ * Helper function to create an XElement or XElementDescription.
+ *
+ * The syntax for this function is heavily inspired by vue.js h() function.
+ *
+ * Usage examples for XElement:
+ *
+ * // full syntax with attributes and children
+ *
+ * f('div', { id: 'my-div', class: 'container' }, [
+ *     f('h1', 'Hello World'),
+ *     f('p', { style: { color: 'red' } }, 'This is a paragraph')
+ * ]);
+ *
+ *
+ * // witt no attributes and a text children
+ *
+ * f('span', 'Just a simple span with text');
+ *
+ *
+ * // with no attributes and multiple children
+ *
+ * f('ul', [
+ *     f('li', 'Item 1'),
+ *     f('li', 'Item 2'),
+ *     f('li', 'Item 3')
+ * ]);
+ *
+ * With this function you can also create an XElementUpdates, which is
+ * a partial definition of changes to apply to an existing HTMLElement. You
+ * can update any existing attributes, or remove them by passing undefined
+ * to the attribute value. You can also do partial updates to the styles.
+ * Children are updated with a full replacement, so if you want to remove
+ * all children, just pass an empty array.
+ *
+ * Usage examples for XElementUpdates:
+ *
+ * // update the class and style of an existing element
+ *
+ * f(null, { class: 'new-class', style: { color: 'blue' } });
+ *
+ *
+ * // remove the id attribute and update the style
+ *
+ * f(null, { id: undefined, style: { fontSize: '20px' } });
+ *
+ *
+ * // replace all children with new ones:
+ *
+ * f(null, [
+ *     f('p', 'New child paragraph'),
+ *     f('button', 'Click Me')
+ * ]);
+ *
+ * Check {@link applyUpdates} to read more on how updates are applied to html elements.
+ */
+export function f(
+    tagName: string,
+    attrs?: XElementAttrs,
+    children?: XElementChildrenArg,
+): XElement;
+export function f(tagName: string, children?: XElementChildrenArg): XElement;
+export function f(
+    tagName: null,
+    attrs: XElementAttrs,
+    children?: XElementChildrenArg,
+): XElementUpdates;
+export function f(
+    tagName: null,
+    children: XElementChildrenArg,
+): XElementUpdates;
+export function f(
+    tagName: string | null,
+    arg2?: XElementAttrs | XElementChildrenArg,
+    arg3?: XElementChildrenArg,
+): XElement | XElementUpdates {
+    let attrs: XElementAttrs | undefined = undefined;
+    let children: XElementChildren | undefined = undefined;
+
+    if (
+        arg2 &&
+        typeof arg2 === "object" &&
+        !Array.isArray(arg2) &&
+        !(isXElementSymbol in arg2)
+    ) {
+        attrs = arg2;
+
+        if (arg3) {
+            children = Array.isArray(arg3) ? arg3 : [arg3];
+        }
+    } else if (arg2) {
+        children = Array.isArray(arg2) ? arg2 : [arg2];
     }
 
-    const htmlElement = document.createElement(xMapEntry.x);
-
-    applyXElementToHtml(xMapEntry, htmlElement);
-
-    return htmlElement;
-}
-
-function parseXMapEntry(
-    xMapEntry: XMapEntry,
-    parentHtml: Element | DocumentFragment,
-): void {
-    const htmlElement = createXMapEntryHtml(xMapEntry);
-
-    // handles childrens management
-    if (isXElement(xMapEntry) && xMapEntry._children) {
-        xMapEntry._children.forEach((child) => {
-            // when item is xObject, element is HTMLElement
-            parseXMapEntry(child, htmlElement as HTMLElement);
-        });
-    }
-
-    parentHtml.appendChild(htmlElement);
-}
-
-export function createPrimitive(xMap: XMap | XMapEntry): XPrimitive {
-    let rootFragment: DocumentFragment;
-
-    return {
-        [xPrimitiveMapKey]: structuredClone(
-            Array.isArray(xMap) ? xMap : [xMap],
-        ),
-        get [xPrimitiveFragmentKey]() {
-            if (!rootFragment) {
-                const xMap = this[xPrimitiveMapKey];
-                rootFragment = document.createDocumentFragment();
-                xMap.forEach((xItem) => parseXMapEntry(xItem, rootFragment));
-            }
-
-            return rootFragment;
-        },
+    // transform input data to the internal XElement structure
+    const xElementDescription: XElementUpdates = {
+        [isXElementSymbol]: true,
+        attrs,
+        children,
     };
+
+    if (tagName !== null) {
+        return {
+            ...xElementDescription,
+            tagName,
+        } as XElement;
+    }
+
+    return xElementDescription;
 }
 
 type XContext = HTMLElement | HTMLElement[] | NodeListOf<Element> | string;
@@ -163,49 +214,40 @@ export function resolveContext(context: XContext): ResolvedXContext {
 }
 
 /**
- * Appends the primitive to the end of the context content.
+ * Appends the XElement to the end of the context content.
  */
-export function appendToContent(
-    primitive: XPrimitive,
-    context: XContext,
-): void {
+export function appendToContent(xElement: XElement, context: XContext): void {
     const contextElements = resolveContext(context);
 
-    contextElements.forEach((context) => {
-        const fragmentElement =
-            primitive[xPrimitiveFragmentKey].cloneNode(true);
-        context.appendChild(fragmentElement);
-    });
+    for (const context of contextElements) {
+        context.appendChild(_createElementHtmlTree(xElement));
+    }
 }
 
 /**
- * Prepends the primitive to the start of the context content.
+ * Prepends the XElement to the start of the context content.
  */
-export function peprendToContent(
-    primitive: XPrimitive,
-    context: XContext,
-): void {
+export function peprendToContent(xElement: XElement, context: XContext): void {
     const contextElements = resolveContext(context);
 
-    contextElements.forEach((context) => {
-        const fragmentElement =
-            primitive[xPrimitiveFragmentKey].cloneNode(true);
-        context.insertBefore(fragmentElement, context.firstChild);
-    });
+    for (const context of contextElements) {
+        context.insertBefore(
+            _createElementHtmlTree(xElement),
+            context.firstChild,
+        );
+    }
 }
 
 /**
- * Clears the context content and inserts the primitive.
+ * Clears the context content and inserts the XElement.
  */
-export function setToContent(primitive: XPrimitive, context: XContext): void {
+export function setToContent(xElement: XElement, context: XContext): void {
     const contextElements = resolveContext(context);
 
-    contextElements.forEach((context) => {
+    for (const context of contextElements) {
         context.innerHTML = "";
-        const fragmentElement =
-            primitive[xPrimitiveFragmentKey].cloneNode(true);
-        context.appendChild(fragmentElement);
-    });
+        context.appendChild(_createElementHtmlTree(xElement));
+    }
 }
 
 /**
@@ -213,34 +255,33 @@ export function setToContent(primitive: XPrimitive, context: XContext): void {
  * apply partial updates to an existing DOM element, in any of its attributes.
  *
  * This function expose the following behaviors for each key of the XElement:
- * - {@link XElement.x} - Not allowed. The tag name of the element cannot be changed during an update.
- * - {@link XElement.style} - Styles will be updated to match the new definition. The update is partial
+ * - {@link XElement.attrs.style} - Styles will be updated to match the new definition. The update is partial
  *                            which means it will only apply to the defined styles and any other pre-existing
  *                            one will be left untouched. If you want to remove a style, set it to null or an empty
  *                            string, as defined in https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style.
- * - {@link XElement._children} - If children array is defined we will remove all childrens from the context and
+ * - {@link XElement.children} - If children array is defined we will remove all childrens from the context and
  *                               replace them with the new ones. This can be used to remove all children from the context
  *                               by setting it to an empty array.
- * - Any other key - These will be treated as attributes and when provided will update the corresponding attribute
- *                   with the new value. The update is partial which means it will only apply to the defined attributes
- *                   and any other pre-existing one will be left untouched. If you want to remove an attribute, set it to
- *                   undefined.
+ * - {@link XElement.attrs} - When provided will update the corresponding attribute with the new value. The update is
+ *                            partial which means it will only apply to the defined attributes and any other pre-existing
+ *                            one will be left untouched. If you want to remove an attribute, set it to undefined.
  */
 export function applyUpdates(
-    updatesDefinition: Omit<XElement, "x">,
+    updatesDefinition: XElementUpdates,
     context: XContext,
 ): void {
     const contextElements = resolveContext(context);
 
-    contextElements.forEach((context) => {
-        applyXElementToHtml(updatesDefinition, context);
+    for (const context of contextElements) {
+        if (updatesDefinition.attrs) {
+            _applyElementAttrsToHtml(updatesDefinition.attrs, context);
+        }
 
-        // handle children updates clearing existing children and add the new ones
-        if (updatesDefinition._children) {
+        if (updatesDefinition.children) {
             context.innerHTML = "";
-            updatesDefinition._children.forEach((child: XMapEntry) => {
-                parseXMapEntry(child, context);
+            updatesDefinition.children.forEach((child) => {
+                context.appendChild(_createElementHtmlTree(child));
             });
         }
-    });
+    }
 }

@@ -12,7 +12,10 @@ const texturesContainer = new Map();
  * This is a read-only view of the texturesContainer to prevent direct manipulation. For adding or removing
  * textures refer to the {@link addTexture} and {@link removeTexture} functions instead.
  */
-const readonlyTexturesContainer: ReadonlyMap<string, string> = Object.freeze({
+const readonlyTexturesContainer: ReadonlyMap<
+    string | null | undefined,
+    string
+> = Object.freeze({
     [Symbol.iterator]:
         texturesContainer[Symbol.iterator].bind(texturesContainer),
     entries: texturesContainer.entries.bind(texturesContainer),

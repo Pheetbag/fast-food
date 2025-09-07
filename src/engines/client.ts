@@ -2,6 +2,8 @@
 
 import { randomNumber, getUniqueId } from "../tools";
 import { config } from "../master.config";
+import { textures } from "./textures";
+import { ClientTexturesEnum } from "../components/client";
 
 export class ClientController {
     quantity: number = 0;
@@ -55,7 +57,7 @@ export class Client {
     id: string;
     level: number;
     state: string;
-    face: unknown;
+    face: string;
     patience: number;
     wish: ClientWish;
 
@@ -64,10 +66,22 @@ export class Client {
         this.level = game.level;
         this.state = "waiting";
 
-        this.face =
-            game.assets[config.defaultAsset].textureMap.client[
-                randomNumber(0, 26)
-            ];
+        const clientTexturesKeys = Object.values(ClientTexturesEnum);
+        const randomTextureIndex = randomNumber(
+            0,
+            clientTexturesKeys.length - 1,
+        );
+        const randomTextureKey = clientTexturesKeys[randomTextureIndex];
+        const randomTexture = textures.get(randomTextureKey);
+
+        if (!randomTexture) {
+            throw new Error(
+                `Couldn't find texture path. Invalid random texture: ${randomTextureIndex} -> ${randomTextureKey}`,
+            );
+        }
+
+        this.face = randomTexture;
+
         this.patience = randomNumber(
             config.clientMinPatience,
             config.clientMaxPatience,
