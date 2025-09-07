@@ -4,7 +4,6 @@ import { textures } from "../engines/textures";
 
 export function loadRenderablesMenu(): void {
     createRenderable("menu", game.state.scene.menu, ({ newState }) => {
-        console.log(newState);
         // we get the all references in one go, for performance
         const menuSlots = document.querySelectorAll(".ff-gameMenu-slot");
 
