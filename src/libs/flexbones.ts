@@ -9,7 +9,7 @@ type XElementChildren = XElementLike[];
 
 const isXElementSymbol = Symbol("isXElement");
 
-type XElement = {
+export type XElement = {
     [isXElementSymbol]: true;
     tagName: string;
     children?: XElementChildren | undefined;
