@@ -10,6 +10,8 @@ import { addTexture, textures } from "./engines/textures";
 import { clientComponent } from "./components/client";
 import { healthBarComponent } from "./components/health-bar";
 import { loadRenderablesHealthBar } from "./renderables/health-bar";
+import { starsBarComponent } from "./components/stars-bar";
+import { loadRenderablesStarsBar } from "./renderables/stars-bar";
 
 /**
  * FIXME: This is code from the early migration of the engines to the new codebase
@@ -29,6 +31,7 @@ assets.set(ff.defaultAsset);
 // FIXME: create a proper components loader and move this there.
 clientComponent.loadTextures(addTexture);
 healthBarComponent.loadTextures(addTexture);
+starsBarComponent.loadTextures(addTexture);
 
 //------- WE SET ITEMS IN INVENTORY
 for (let i = 0; i < 20; i++) {
@@ -40,6 +43,7 @@ scene.setup();
 
 // FIXME: MOVE ME TO A BETTER PLACE
 loadRenderablesHealthBar();
+loadRenderablesStarsBar();
 
 createRenderable(
     "player_name",
