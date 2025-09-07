@@ -204,13 +204,19 @@ type XContext = HTMLElement | HTMLElement[] | NodeListOf<Element> | string;
 type ResolvedXContext = HTMLElement[] | NodeListOf<Element>;
 
 export function resolveContext(context: XContext): ResolvedXContext {
+    let contextElements: ResolvedXContext;
+
     if (typeof context === "string") {
-        return document.querySelectorAll(context);
-    } else if (context instanceof HTMLElement) {
-        return [context];
+        contextElements = document.querySelectorAll(context);
     } else {
-        return context;
+        contextElements = context instanceof HTMLElement ? [context] : context;
     }
+
+    if (contextElements.length === 0) {
+        console.warn(`No elements found for context: ${String(context)}`);
+    }
+
+    return contextElements;
 }
 
 /**

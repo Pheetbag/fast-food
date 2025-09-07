@@ -1,9 +1,10 @@
 //global object "client". control all client actions.
 
-import { randomNumber, getUniqueId } from "../tools";
 import { config } from "../master.config";
 import { textures } from "./textures";
 import { ClientTexturesEnum } from "../components/client";
+import { randomNumber } from "../utils/randomNumber";
+import { getUniqueId } from "../utils/getUniqueId";
 
 export class ClientController {
     quantity: number = 0;
@@ -21,8 +22,6 @@ export class ClientController {
                 this.deltaSinceLastGenerationAttempt,
         );
         this.deltaSinceLastGenerationAttempt = 0;
-
-        console.log(client);
 
         return client;
     }
