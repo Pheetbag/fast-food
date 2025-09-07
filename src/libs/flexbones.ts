@@ -200,8 +200,13 @@ export function f(
     return xElementDescription;
 }
 
-type XContext = HTMLElement | HTMLElement[] | NodeListOf<Element> | string;
-type ResolvedXContext = HTMLElement[] | NodeListOf<Element>;
+type XContext =
+    | HTMLElement
+    | HTMLElement[]
+    | Element
+    | NodeListOf<Element>
+    | string;
+type ResolvedXContext = Element[] | HTMLElement[] | NodeListOf<Element>;
 
 export function resolveContext(context: XContext): ResolvedXContext {
     let contextElements: ResolvedXContext;
@@ -209,7 +214,10 @@ export function resolveContext(context: XContext): ResolvedXContext {
     if (typeof context === "string") {
         contextElements = document.querySelectorAll(context);
     } else {
-        contextElements = context instanceof HTMLElement ? [context] : context;
+        contextElements =
+            context instanceof HTMLElement || context instanceof Element
+                ? [context]
+                : context;
     }
 
     if (contextElements.length === 0) {

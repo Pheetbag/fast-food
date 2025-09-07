@@ -6,12 +6,14 @@ import { gameLoop } from "./engines/game-loop";
 import { renderAll, createRenderable } from "./libs/render-x";
 import { applyUpdates, f } from "./libs/flexbones";
 import { config } from "./master.config";
-import { addTexture, textures } from "./engines/textures";
+import { addTexture } from "./engines/textures";
 import { clientComponent } from "./components/client";
 import { healthBarComponent } from "./components/health-bar";
 import { loadRenderablesHealthBar } from "./renderables/health-bar";
 import { starsBarComponent } from "./components/stars-bar";
 import { loadRenderablesStarsBar } from "./renderables/stars-bar";
+import { menuComponent } from "./components/menu";
+import { loadRenderablesMenu } from "./renderables/menu";
 
 /**
  * FIXME: This is code from the early migration of the engines to the new codebase
@@ -20,7 +22,6 @@ import { loadRenderablesStarsBar } from "./renderables/stars-bar";
  */
 globalThis.client = clientsEngine;
 globalThis.config = config;
-globalThis.textures = textures;
 
 // END OF ENGINES MIGRATION
 
@@ -32,6 +33,7 @@ assets.set(ff.defaultAsset);
 clientComponent.loadTextures(addTexture);
 healthBarComponent.loadTextures(addTexture);
 starsBarComponent.loadTextures(addTexture);
+menuComponent.loadTextures(addTexture);
 
 //------- WE SET ITEMS IN INVENTORY
 for (let i = 0; i < 20; i++) {
@@ -44,6 +46,7 @@ scene.setup();
 // FIXME: MOVE ME TO A BETTER PLACE
 loadRenderablesHealthBar();
 loadRenderablesStarsBar();
+loadRenderablesMenu();
 
 createRenderable(
     "player_name",
@@ -79,28 +82,15 @@ createRenderable(
     },
 );
 
-const fpsElement: HTMLElement =
-    paint.getContext("ff-gamePrint-fps")[0]?.children[0];
-
 gameLoop.addDrawStep(() => {
-    if (fpsElement) {
-        fpsElement.innerHTML = `${Math.round(gameLoop.fps)} fps`;
-    }
+    applyUpdates(
+        f(null, `${Math.round(gameLoop.fps)} fps`),
+        ".ff-gamePrint-fps > :nth-child(1)",
+    );
 });
 
 gameLoop.addDrawStep(() => {
-    //We update the print renders.
-    if (render.print.checkMemory("stars", game.state.player.stars) == false) {
-        render.print.stars(game.state.player.stars);
-    }
-    if (render.print.checkMemory("money", game.state.player.money) == false) {
-        render.print.money(game.state.player.money);
-    }
-
     //We update the scene renders.
-    if (render.scene.checkMemory("menu", game.state.scene.menu) == false) {
-        render.scene.menu(game.state.scene.menu);
-    }
     if (render.scene.checkMemory("hand", game.state.player.hand) == false) {
         render.scene.hand(game.state.player.hand);
     }
