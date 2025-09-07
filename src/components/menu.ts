@@ -1,29 +1,29 @@
 import type { Component } from "./component";
 
 export enum FoodItemTexturesEnum {
-    HAMBURGER = "core:food-item:hamburguer",
-    FRIES = "core:food-item:fries",
-    HOT_DOG = "core:food-item:hot-dog",
-    TOAST = "core:food-item:toast",
-    DOUGHNUT = "core:food-item:doughnut",
-    EGG = "core:food-item:egg",
-    CHEESE = "core:food-item:cheese",
-    FISH = "core:food-item:fish",
-    SANDWICH = "core:food-item:sandwich",
-    MEAT = "core:food-item/meat",
-    PIZZA = "core:food-item:pizza",
-    SHRIMP = "core:food-item:shrimp",
-    KEBAB = "core:food-item:kebab",
-    CROISSANT = "core:food-item:croissant",
-    STEAK = "core:food-item:steak",
-    COOKIES = "core:food-item:cookies",
-    SALAD = "core:food-item:salad",
-    SUSHI = "core:food-item:sushi",
-    PANCAKES = "core:food-item:pancakes",
-    SALAMI = "core:food-item:salami",
+    HAMBURGER = "core:menu:food-item:hamburguer",
+    FRIES = "core:menu:food-item:fries",
+    HOT_DOG = "core:menu:food-item:hot-dog",
+    TOAST = "core:menu:food-item:toast",
+    DOUGHNUT = "core:menu:food-item:doughnut",
+    EGG = "core:menu:food-item:egg",
+    CHEESE = "core:menu:food-item:cheese",
+    FISH = "core:menu:food-item:fish",
+    SANDWICH = "core:menu:food-item:sandwich",
+    MEAT = "core:menu:food-item:meat",
+    PIZZA = "core:menu:food-item:pizza",
+    SHRIMP = "core:menu:food-item:shrimp",
+    KEBAB = "core:menu:food-item:kebab",
+    CROISSANT = "core:menu:food-item:croissant",
+    STEAK = "core:menu:food-item:steak",
+    COOKIES = "core:menu:food-item:cookies",
+    SALAD = "core:menu:food-item:salad",
+    SUSHI = "core:menu:food-item:sushi",
+    PANCAKES = "core:menu:food-item:pancakes",
+    SALAMI = "core:menu:food-item:salami",
 }
 
-export const foodItemComponent: Component = {
+export const menuComponent: Component = {
     loadTextures(addTexture) {
         addTexture(
             FoodItemTexturesEnum.HAMBURGER,

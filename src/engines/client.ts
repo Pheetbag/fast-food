@@ -17,10 +17,6 @@ export class ClientController {
         this.list.push(client);
 
         this.quantity++;
-        console.log(
-            "New client generated. at delta: " +
-                this.deltaSinceLastGenerationAttempt,
-        );
         this.deltaSinceLastGenerationAttempt = 0;
 
         return client;
@@ -43,7 +39,6 @@ export class ClientController {
             config.clientRandom == true &&
             randomNumber(1, 100) > config.clientRandomChance
         ) {
-            console.log("failed random chance");
             this.deltaSinceLastGenerationAttempt = 0;
             return false;
         }

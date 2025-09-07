@@ -42,7 +42,7 @@ function addTexture(id: string, textureUrl: string) {
         return;
     }
 
-    const idRegex = /^[a-zA-Z0-9_]+(:[a-zA-Z0-9_]+)*$/;
+    const idRegex = /^[a-zA-Z0-9_-]+(:[a-zA-Z0-9_-]+)*$/;
     if (!idRegex.test(id)) {
         console.error(
             `Texture id \`${id}\` is not valid. It should be defined by an string that can be prefixed by any nested amount of scopes separated by colons. e.g. "core:hearts", "client:avatar:{id}"`,
