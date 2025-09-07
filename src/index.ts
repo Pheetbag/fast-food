@@ -14,6 +14,7 @@ import { starsBarComponent } from "./components/stars-bar";
 import { loadRenderablesStarsBar } from "./renderables/stars-bar";
 import { menuComponent } from "./components/menu";
 import { loadRenderablesMenu } from "./renderables/menu";
+import { loadRenderablesMoney } from "./renderables/money";
 
 /**
  * FIXME: This is code from the early migration of the engines to the new codebase
@@ -47,6 +48,7 @@ scene.setup();
 loadRenderablesHealthBar();
 loadRenderablesStarsBar();
 loadRenderablesMenu();
+loadRenderablesMoney();
 
 createRenderable(
     "player_name",
