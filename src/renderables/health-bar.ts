@@ -3,7 +3,7 @@
 import { createRenderable } from "../libs/render-x";
 import { applyUpdates, f } from "../libs/flexbones";
 import { HeartTexturesEnum } from "../components/health-bar";
-import { transformProgressToDisplayState } from "../utils/steppedProgressBar";
+import { transformProgressToDisplayState } from "../utils/stepped-progress-bar";
 import { textures } from "../engines/textures";
 
 const MAX_HEARTS = 6 as const;

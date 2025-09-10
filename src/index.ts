@@ -16,6 +16,7 @@ import { menuComponent } from "./components/menu";
 import { loadRenderablesMenu } from "./renderables/menu";
 import { loadRenderablesMoney } from "./renderables/money";
 import { leadRenderablesHand } from "./renderables/hand";
+import { animateAll, animateAllComputed } from "./libs/animate-x";
 
 /**
  * FIXME: This is code from the early migration of the engines to the new codebase
@@ -95,6 +96,8 @@ gameLoop.addDrawStep(() => {
 
 gameLoop.addDrawStep(() => {
     renderAll();
+    animateAll();
+    animateAllComputed();
 });
 
 gameLoop.addUpdateStep((delta) => {

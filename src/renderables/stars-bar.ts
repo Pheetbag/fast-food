@@ -1,6 +1,6 @@
 import { StarTexturesEnum } from "../components/stars-bar";
 import { createRenderable } from "../libs/render-x";
-import { transformProgressToDisplayState } from "../utils/steppedProgressBar";
+import { transformProgressToDisplayState } from "../utils/stepped-progress-bar";
 import { textures } from "../engines/textures";
 import { applyUpdates, f } from "../libs/flexbones";
 

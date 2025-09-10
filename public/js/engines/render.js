@@ -43,10 +43,6 @@ function Render() {
 
         return tempMap;
     };
-
-    this.do = function () {
-        this.print.do();
-    };
 }
 
 function RenderAnimate() {
@@ -239,13 +235,6 @@ function RenderPrint() {
         stars: [0, 0, 0, 0, 0, 0],
         money: -1,
         name: "",
-    };
-
-    RenderPrint.prototype.do = function () {
-        this.hearts(game.state.player.hearts);
-        this.stars(game.state.player.stars);
-        this.money(game.state.player.money);
-        this.name(game.state.player.name);
     };
 
     RenderPrint.prototype.hearts = function (gameState) {

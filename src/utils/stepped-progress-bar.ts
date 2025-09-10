@@ -1,5 +1,5 @@
-import type { FixedArray } from "./fixedArray.type";
-import type { MaxInt } from "./maxInt.type";
+import type { FixedArray } from "./fixed-array.type";
+import type { MaxInt } from "./max-int.type";
 
 export type SteppedProgressBarDisplayState<
     StepValue extends number,
