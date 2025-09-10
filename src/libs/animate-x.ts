@@ -373,10 +373,10 @@ export function animateAllComputed() {
             .computedKeyframes) {
             // if offset is equal or over current progress of the native animation
             // run the keyframes for that offset.
-            // @ts-expect-error overallProgress is an actual available attr on the WAAPI spec
             if (
-                (offset <=
-                    animatable.animationLifecycle.overallProgress) as number
+                offset <=
+                // @ts-expect-error overallProgress is an actual available attr on the WAAPI spec
+                (animatable.animationLifecycle.overallProgress as number)
             ) {
                 for (const { context } of animatable.nativeAnimations) {
                     computedKeyframes.forEach((computedKeyframe) =>
