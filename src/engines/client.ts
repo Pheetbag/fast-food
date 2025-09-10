@@ -3,8 +3,8 @@
 import { config } from "../master.config";
 import { textures } from "./textures";
 import { ClientTexturesEnum } from "../components/client";
-import { randomNumber } from "../utils/randomNumber";
-import { getUniqueId } from "../utils/getUniqueId";
+import { randomNumber } from "../utils/random-number";
+import { getUniqueId } from "../utils/get-unique-id";
 
 export class ClientController {
     quantity: number = 0;

@@ -1,4 +1,4 @@
-/**
+/*
  * RenderX is intended to serve as the rendering engine to replace the existing one at render.js,
  * in a similar fashion to the updated version of the "game-loop" engine, is not designed to contain
  * the rendering logic for every case in itself, but instead will handle the lifecycle of the
@@ -13,25 +13,23 @@
  * component but also the gameState it reacts to.
  */
 
-// gameState can be provided as a reference or a getter function
-type RenderStateGetter<T> = T | (() => T);
+import { getUniqueId } from "../utils/get-unique-id";
+import { resolveValueGetter, type ValueGetter } from "../utils/value-getter";
+import type { AnimatableController } from "./animate-x";
 
-type RenderFn<T> = (state: { newState: T; oldState: T }) => void;
+export type StateChangeSnapshot<T> = { newState: T; oldState: T };
+
+type RenderFn<T> = (
+    state: StateChangeSnapshot<T>,
+) => undefined | AnimatableController;
 
 type Renderable<T> = {
+    id: string;
     name: string;
-    stateRef: RenderStateGetter<T>;
+    stateRef: ValueGetter<T>;
     renderedState: T | undefined;
     renderFn: RenderFn<T>;
 };
-
-function resolveStateGetter<T>(state: RenderStateGetter<T>): T {
-    if (state instanceof Function) {
-        return state();
-    } else {
-        return state;
-    }
-}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const renderables: Renderable<any>[] = [];
@@ -43,10 +41,11 @@ const renderables: Renderable<any>[] = [];
  */
 function createRenderable<T>(
     name: string,
-    state: RenderStateGetter<T>,
+    state: ValueGetter<T>,
     renderFn: RenderFn<T>,
 ): Renderable<T> {
     const renderable = {
+        id: getUniqueId(),
         name,
         stateRef: state,
         renderedState: undefined,
@@ -62,22 +61,29 @@ function createRenderable<T>(
  * Check if the state has changed compared to the last rendered state.
  * If it has, call the render function and update the rendered state.
  *
+ * FIXME: work on animation as a result of renders
+ *
  * @param renderable The renderable to check and potentially render.
  * @returns true if the state has changed and the render function was called, false otherwise.
  */
 function checkAndRender(renderable: Renderable<unknown>): boolean {
-    const currentState = resolveStateGetter(renderable.stateRef);
+    const currentState = resolveValueGetter(renderable.stateRef);
 
     // Simple deep comparison, can be optimized later if needed
     if (
         JSON.stringify(currentState) !==
         JSON.stringify(renderable.renderedState)
     ) {
-        renderable.renderFn({
+        const animatable = renderable.renderFn({
             newState: currentState,
             oldState: renderable.renderedState,
         });
+
         renderable.renderedState = structuredClone(currentState);
+
+        if (animatable) {
+            animatable.useCommitStyles(true);
+        }
         return true;
     }
 
@@ -94,10 +100,4 @@ function renderAll() {
     });
 }
 
-export {
-    renderAll,
-    createRenderable,
-    type Renderable,
-    type RenderFn,
-    type RenderStateGetter,
-};
+export { renderAll, createRenderable, type Renderable, type RenderFn };

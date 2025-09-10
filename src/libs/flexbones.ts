@@ -200,13 +200,13 @@ export function f(
     return xElementDescription;
 }
 
-type XContext =
+export type XContext =
     | HTMLElement
     | HTMLElement[]
     | Element
     | NodeListOf<Element>
     | string;
-type ResolvedXContext = Element[] | HTMLElement[] | NodeListOf<Element>;
+export type ResolvedXContext = Element[] | HTMLElement[] | NodeListOf<Element>;
 
 export function resolveContext(context: XContext): ResolvedXContext {
     let contextElements: ResolvedXContext;
