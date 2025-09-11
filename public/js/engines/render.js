@@ -46,49 +46,6 @@ function Render() {
 }
 
 function RenderAnimate() {
-    this.hearts = function (
-        context,
-        effect,
-        gameState,
-        memory,
-        duration = 0,
-        delay = 0,
-        isStatic = false,
-    ) {
-        setTimeout(function () {
-            let tempChilds = context.children;
-
-            if (effect == "fill") {
-                //it fill the updated hearts and outline the others.
-                for (let i = 0; i < gameState.length; i++) {
-                    tempChilds[i].style.backgroundImage =
-                        "url(" + game.component.heartsOn[gameState[i]] + ")";
-
-                    //Updated hearts get fill
-                    if (gameState[i] != memory[i]) {
-                        tempChilds[i].style.backgroundImage =
-                            "url(" + game.component.heartsOn[3] + ")";
-                    }
-                }
-            } else if (effect == "outline") {
-                //it outline all hearts
-                for (let i = 0; i < gameState.length; i++) {
-                    tempChilds[i].style.backgroundImage =
-                        "url(" + game.component.heartsOn[gameState[i]] + ")";
-                }
-            }
-            //return everything to normal state after duration
-            if (isStatic == false) {
-                setTimeout(function () {
-                    for (let i = 0; i < gameState.length; i++) {
-                        tempChilds[i].style.backgroundImage =
-                            "url(" + game.component.hearts[gameState[i]] + ")";
-                    }
-                }, duration);
-            }
-        }, delay);
-    };
-
     this.stars = function (
         context,
         effect,
@@ -148,46 +105,6 @@ function RenderAnimate() {
         }, delay);
     };
 
-    this.money = function (
-        context,
-        effect,
-        gameState,
-        memory,
-        duration = 0,
-        delay = 0,
-        isStatic = false,
-    ) {
-        let tempChilds = context.children;
-        let tempChange = gameState - memory;
-        let pointer = 0;
-        if (tempChange < 0) {
-            tempChange = tempChange * -1;
-        }
-
-        if (effect == "++") {
-            let tempInterval = setInterval(function () {
-                pointer += tempChange / 500;
-
-                tempChilds[0].innerHTML = Math.trunc(memory + pointer);
-
-                if (pointer >= tempChange) {
-                    tempChilds[0].innerHTML = gameState;
-                    clearInterval(tempInterval);
-                }
-            }, 0);
-        } else if (effect == "--") {
-            let tempInterval = setInterval(function () {
-                pointer += tempChange / 100;
-
-                tempChilds[0].innerHTML = Math.trunc(memory - pointer);
-
-                if (pointer >= tempChange) {
-                    tempChilds[0].innerHTML = gameState;
-                    clearInterval(tempInterval);
-                }
-            }, 0);
-        }
-    };
     this.hand = function (
         context,
         effect,
@@ -235,35 +152,6 @@ function RenderPrint() {
         stars: [0, 0, 0, 0, 0, 0],
         money: -1,
         name: "",
-    };
-
-    RenderPrint.prototype.hearts = function (gameState) {
-        //if false do not render
-        if (render.state == "false" || this.state == "false") {
-            return;
-        }
-
-        gameState = render.map(gameState, 6);
-        const context = paint.getContext("ff-gamePrint-hearts");
-        for (let i = 0; i < context.length; i++) {
-            render.animate.hearts(
-                context[i],
-                "fill",
-                gameState,
-                this.memory.hearts,
-                100,
-            );
-            render.animate.hearts(
-                context[i],
-                "outline",
-                gameState,
-                this.memory.hearts,
-                100,
-                200,
-            );
-        }
-        //updates the memory
-        this.updateMemory("hearts", gameState);
     };
     RenderPrint.prototype.stars = function (gameState) {
         //if false do not render
@@ -323,44 +211,6 @@ function RenderPrint() {
         }
         //updates the memory
         this.updateMemory("stars", gameState);
-    };
-    RenderPrint.prototype.money = function (gameState) {
-        //if false do not render
-        if (render.state == "false" || this.state == "false") {
-            return;
-        }
-
-        const context = paint.getContext("ff-gamePrint-money");
-        for (let i = 0; i < context.length; i++) {
-            let childs = context[i].children;
-            //text color
-            if (gameState < 0) {
-                childs[0].style.color = "rgb(216,57,48)";
-            } else {
-                childs[0].style.color = "white";
-            }
-            //animate ++ or --
-            if (this.memory.money <= gameState) {
-                render.animate.money(
-                    context[i],
-                    "++",
-                    gameState,
-                    this.memory.money,
-                    0,
-                );
-            } else if (this.memory.money > gameState) {
-                console.log("hdec");
-                render.animate.money(
-                    context[i],
-                    "--",
-                    gameState,
-                    this.memory.money,
-                    0,
-                );
-            }
-        }
-        //updates the memory
-        this.updateMemory("money", gameState);
     };
 
     RenderPrint.prototype.checkMemory = function (partition, gameState) {

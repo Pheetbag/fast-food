@@ -42,7 +42,7 @@ export const healthBarComponent: Component = {
         );
         addTexture(
             HeartTexturesEnum.HEART_EXTRA_OUTLINED,
-            "assets/gameGeneral_ico",
+            "assets/gameGeneral_ico/heart_extra_On.png",
         );
     },
 };
