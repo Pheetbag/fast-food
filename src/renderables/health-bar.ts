@@ -1,13 +1,65 @@
 // TODO: consider this file maybe can be defined/ declared within the component
 
-import { createRenderable } from "../libs/render-x";
-import { applyUpdates, f } from "../libs/flexbones";
+import { createRenderable, type StateChangeSnapshot } from "../libs/render-x";
 import { HeartTexturesEnum } from "../components/health-bar";
 import { transformProgressToDisplayState } from "../utils/stepped-progress-bar";
 import { textures } from "../engines/textures";
+import {
+    type AnimatableController,
+    createAnimatable,
+    createStatefulAnimation,
+} from "../libs/animate-x";
+import type { MaxInt } from "../utils/max-int.type";
 
 const MAX_HEARTS = 6 as const;
 const MAX_HEART_VALUE = 2 as const;
+
+export function loadRenderablesHealthBar() {
+    createRenderable(
+        "health_bar",
+        () => game.state.player.hearts as number,
+        ({ oldState, newState }) => {
+            if (newState > MAX_HEARTS * MAX_HEART_VALUE) {
+                throw new Error(
+                    `Cannot Render: Player hearts value (${newState}) exceeds maximum allowed (${MAX_HEARTS * MAX_HEART_VALUE})`,
+                );
+            }
+
+            // TODO: consider making an initialrender signal an official part of the api spec.
+            const initialRender = oldState === undefined;
+
+            const oldDisplayState = transformProgressToDisplayState(
+                oldState,
+                MAX_HEARTS,
+                MAX_HEART_VALUE,
+            );
+
+            const newDisplayState = transformProgressToDisplayState(
+                newState,
+                MAX_HEARTS,
+                MAX_HEART_VALUE,
+            );
+
+            const animations: AnimatableController[] = [];
+
+            for (let i = 0; i < MAX_HEARTS; i++) {
+                const newState = newDisplayState[i] ?? 0;
+                const oldState = oldDisplayState[i] ?? 0;
+
+                animations.push(
+                    createAnimatable(
+                        `.ff-gamePrint-hearts > :nth-child(${i + 1})`,
+                        initialRender ? 0 : 300,
+                        heartUpdateAnimation,
+                        { oldState, newState },
+                    ),
+                );
+            }
+
+            return animations;
+        },
+    );
+}
 
 const HEART_VALUE_TO_TEXTURE = {
     0: HeartTexturesEnum.HEART_DEAD,
@@ -15,33 +67,36 @@ const HEART_VALUE_TO_TEXTURE = {
     2: HeartTexturesEnum.HEART_EXTRA,
 } as const;
 
-export function loadRenderablesHealthBar() {
-    createRenderable(
-        "health_bar",
-        () => game.state.player.hearts as number,
-        ({ newState }) => {
-            if (newState > MAX_HEARTS * MAX_HEART_VALUE) {
-                throw new Error(
-                    `Cannot Render: Player hearts value (${newState}) exceeds maximum allowed (${MAX_HEARTS * MAX_HEART_VALUE})`,
-                );
-            }
+const HEART_VALUE_TO_OUTLINED_TEXTURE = {
+    0: HeartTexturesEnum.HEART_DEAD_OUTLINED,
+    1: HeartTexturesEnum.HEART_ACTIVE_OUTLINED,
+    2: HeartTexturesEnum.HEART_EXTRA_OUTLINED,
+} as const;
 
-            const displayState = transformProgressToDisplayState(
-                newState,
-                MAX_HEARTS,
-                MAX_HEART_VALUE,
-            );
+const heartUpdateAnimation = createStatefulAnimation<
+    StateChangeSnapshot<MaxInt<2>>
+>(({ oldState, newState }, { addKeyframe }) => {
+    const isUpdated = oldState !== newState;
+    const outlinedTextureId = HEART_VALUE_TO_OUTLINED_TEXTURE[newState];
+    const highlightTextureId = HeartTexturesEnum.HEART_HIGHLIGHTED;
+    const updatedTextureId = HEART_VALUE_TO_TEXTURE[newState];
 
-            for (let i = 0; i < MAX_HEARTS; i++) {
-                const heartValue = displayState[i] ?? 0;
-                const heartTextureId = HEART_VALUE_TO_TEXTURE[heartValue];
-                const heartTextureUrl = `url(${textures.get(heartTextureId)})`;
-
-                applyUpdates(
-                    f(null, { style: { backgroundImage: heartTextureUrl } }),
-                    `.ff-gamePrint-hearts > :nth-child(${i + 1})`,
-                );
-            }
-        },
-    );
-}
+    /*
+     * easing doesn't apply to the transition TO the keyframe it is declared on,
+     * instead, applies to the transition FROM keyframe it is declare on TO the
+     * next keyframe.
+     * For that, if we want to apply an easing from starting state to the first
+     * keyframe, we need an easing only keyframe to do the trick.
+     */
+    addKeyframe({ easing: "linear(0, 1 5%)" });
+    // highlight or outline depending on if the state changed
+    addKeyframe({
+        backgroundImage: `url(${textures.get(isUpdated ? highlightTextureId : outlinedTextureId)})`,
+    });
+    // Updated new value rendered
+    addKeyframe({ backgroundImage: `url(${textures.get(updatedTextureId)})` });
+    // Outline highlight
+    addKeyframe({ backgroundImage: `url(${textures.get(outlinedTextureId)})` });
+    // Back to normal
+    addKeyframe({ backgroundImage: `url(${textures.get(updatedTextureId)})` });
+});

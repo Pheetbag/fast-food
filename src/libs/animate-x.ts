@@ -337,8 +337,19 @@ function animate(animatable: Animatable) {
             //          are gameloop dependent and not animation dependent, even if the API makes it look like it is.
             //runningAnimatables.delete(animatable.id);
             if (animatable.useCommitStyles) {
-                nativeAnimation.animation.commitStyles();
-                nativeAnimation.animation.cancel();
+                try {
+                    nativeAnimation.animation.commitStyles();
+                } catch (e) {
+                    // FIXME: this might require scheduling the commitStyles for elements outside of the screen
+                    //        we don't want to lose the proper rendering
+                    console.error(
+                        "[Animatable] Error persisting animation final rendered state.",
+                        animatable,
+                        e,
+                    );
+                } finally {
+                    nativeAnimation.animation.cancel();
+                }
             }
 
             if (animatable.onFinish) {

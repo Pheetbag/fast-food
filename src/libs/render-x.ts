@@ -19,9 +19,11 @@ import type { AnimatableController } from "./animate-x";
 
 export type StateChangeSnapshot<T> = { newState: T; oldState: T };
 
-type RenderFn<T> = (
-    state: StateChangeSnapshot<T>,
-) => undefined | AnimatableController;
+type RenderFn<T> =
+    | ((
+          state: StateChangeSnapshot<T>,
+      ) => AnimatableController | AnimatableController[])
+    | ((state: StateChangeSnapshot<T>) => void);
 
 type Renderable<T> = {
     id: string;
@@ -74,16 +76,21 @@ function checkAndRender(renderable: Renderable<unknown>): boolean {
         JSON.stringify(currentState) !==
         JSON.stringify(renderable.renderedState)
     ) {
-        const animatable = renderable.renderFn({
+        let animatables = renderable.renderFn({
             newState: currentState,
             oldState: renderable.renderedState,
         });
 
+        if (!Array.isArray(animatables)) {
+            animatables = animatables ? [animatables] : [];
+        }
+
         renderable.renderedState = structuredClone(currentState);
 
-        if (animatable) {
+        for (const animatable of animatables) {
             animatable.useCommitStyles(true);
         }
+
         return true;
     }
 
