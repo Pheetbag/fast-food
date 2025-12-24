@@ -1,8 +1,8 @@
-import { StarTexturesEnum } from "../components/stars-bar";
-import { createRenderable } from "../libs/render-x";
-import { transformProgressToDisplayState } from "../utils/stepped-progress-bar";
-import { textures } from "../engines/textures";
-import { applyUpdates, f } from "../libs/flexbones";
+import { type CreateRenderable } from "../../libs/render-x";
+import { transformProgressToDisplayState } from "../../utils/stepped-progress-bar";
+import { textures } from "../../engines/textures";
+import { applyUpdates, f } from "../../libs/flexbones";
+import { StarTexturesEnum } from "./textures";
 
 const MAX_STARS = 6 as const;
 const MAX_STAR_VALUE = 5 as const;
@@ -16,7 +16,7 @@ const STAR_VALUE_TO_TEXTURE = {
     5: StarTexturesEnum.STAR_LEVEL_5,
 } as const;
 
-export function loadRenderablesStarsBar(): void {
+export function loadRenderables(createRenderable: CreateRenderable): void {
     createRenderable(
         "stars_bar",
         () => game.state.player.stars as number,

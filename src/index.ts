@@ -7,16 +7,13 @@ import { renderAll, createRenderable } from "./libs/render-x";
 import { applyUpdates, f } from "./libs/flexbones";
 import { config } from "./master.config";
 import { addTexture } from "./engines/textures";
-import { clientComponent } from "./components/client";
-import { healthBarComponent } from "./components/health-bar";
-import { loadRenderablesHealthBar } from "./renderables/health-bar";
-import { starsBarComponent } from "./components/stars-bar";
-import { loadRenderablesStarsBar } from "./renderables/stars-bar";
-import { menuComponent } from "./components/menu";
-import { loadRenderablesMenu } from "./renderables/menu";
-import { loadRenderablesMoney } from "./renderables/money";
-import { leadRenderablesHand } from "./renderables/hand";
+import { clientComponent } from "./components/client.component";
+import { healthBarComponent } from "./components/health-bar/health-bar.component";
+import { starsBarComponent } from "./components/stars-bar/stars-bar.component";
+import { menuComponent } from "./components/menu.component";
 import { animateAll, animateAllComputed } from "./libs/animate-x";
+import { moneyComponent } from "./components/money/money.component";
+import { handComponent } from "./components/hand.component";
 
 /**
  * FIXME: This is code from the early migration of the engines to the new codebase
@@ -33,10 +30,10 @@ assets.set(ff.defaultAsset);
 
 // initialize components textures
 // FIXME: create a proper components loader and move this there.
-clientComponent.loadTextures(addTexture);
-healthBarComponent.loadTextures(addTexture);
-starsBarComponent.loadTextures(addTexture);
-menuComponent.loadTextures(addTexture);
+clientComponent?.loadTextures?.(addTexture);
+healthBarComponent?.loadTextures?.(addTexture);
+starsBarComponent?.loadTextures?.(addTexture);
+menuComponent?.loadTextures?.(addTexture);
 
 //------- WE SET ITEMS IN INVENTORY
 for (let i = 0; i < 20; i++) {
@@ -46,18 +43,22 @@ for (let i = 0; i < 20; i++) {
 //setup all the scene, including reactions, and objects
 scene.setup();
 
-// FIXME: MOVE ME TO A BETTER PLACE
-loadRenderablesHealthBar();
-loadRenderablesStarsBar();
-loadRenderablesMenu();
-loadRenderablesMoney();
-leadRenderablesHand();
+// FIXME: Move me to a better place with proper components loader and move this there.
+healthBarComponent?.setup?.();
+starsBarComponent?.setup?.();
+moneyComponent?.setup?.();
+
+// FIXME: MOVE ME TO A BETTER PLACE with proper components loader and move this there.
+healthBarComponent?.loadRenderables?.(createRenderable);
+starsBarComponent?.loadRenderables?.(createRenderable);
+menuComponent?.loadRenderables?.(createRenderable);
+moneyComponent?.loadRenderables?.(createRenderable);
+handComponent?.loadRenderables?.(createRenderable);
 
 createRenderable(
     "player_name",
     () => game.state.player.name as string,
     ({ newState }) => {
-        // TODO:  should use direct access to low level flexbones or render should have an API?
         applyUpdates(f(null, newState), "#ff-gamePrint-name");
     },
 );

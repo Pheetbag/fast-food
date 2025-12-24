@@ -1,20 +1,25 @@
 // TODO: consider this file maybe can be defined/ declared within the component
 
-import { createRenderable, type StateChangeSnapshot } from "../libs/render-x";
-import { HeartTexturesEnum } from "../components/health-bar";
-import { transformProgressToDisplayState } from "../utils/stepped-progress-bar";
-import { textures } from "../engines/textures";
+import {
+    type CreateRenderable,
+    type StateChangeSnapshot,
+} from "../../libs/render-x";
+import { transformProgressToDisplayState } from "../../utils/stepped-progress-bar";
+import { textures } from "../../engines/textures";
 import {
     type AnimatableController,
     createAnimatable,
     createStatefulAnimation,
-} from "../libs/animate-x";
-import type { MaxInt } from "../utils/max-int.type";
+} from "../../libs/animate-x";
+import type { MaxInt } from "../../utils/max-int.type";
+
+import { HeartTexturesEnum } from "./textures";
 
 const MAX_HEARTS = 6 as const;
 const MAX_HEART_VALUE = 2 as const;
 
-export function loadRenderablesHealthBar() {
+// FIXME: createRenderable fix in the future.
+export function loadRenderables(createRenderable: CreateRenderable): void {
     createRenderable(
         "health_bar",
         () => game.state.player.hearts as number,
@@ -49,6 +54,10 @@ export function loadRenderablesHealthBar() {
                 animations.push(
                     createAnimatable(
                         `.ff-gamePrint-hearts > :nth-child(${i + 1})`,
+                        /*
+                         * TODO: reconsider how to better handle initial renders in animatables. Using it to define animations
+                         *  from the inside of the renderable might not be the best approach. Maybe renderer should handle that?
+                         */
                         initialRender ? 0 : 300,
                         heartUpdateAnimation,
                         { oldState, newState },

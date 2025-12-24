@@ -1,4 +1,7 @@
 import type { Component } from "./component";
+import { type CreateRenderable } from "../libs/render-x";
+import { textures } from "../engines/textures";
+import { applyUpdates, f } from "../libs/flexbones";
 
 export enum FoodItemTexturesEnum {
     HAMBURGER = "core:menu:food-item:hamburguer",
@@ -60,5 +63,42 @@ export const menuComponent: Component = {
             "assets/food_ico/pancakes.png",
         );
         addTexture(FoodItemTexturesEnum.SALAMI, "assets/food_ico/salami.png");
+    },
+
+    loadRenderables(createRenderable: CreateRenderable) {
+        createRenderable("menu", game.state.scene.menu, ({ newState }) => {
+            // we get the all references in one go, for performance
+            const menuSlots = document.querySelectorAll(".ff-gameMenu-slot");
+
+            for (let i = 0; i < newState.length; i++) {
+                const menuItem = newState[i];
+                const menuItemSlot = menuSlots[i];
+                const menuItemTexture = `url(${textures.get(menuItem.ico)})`;
+
+                if (!menuItemSlot) {
+                    throw new Error(
+                        `No menu slot found for index ${i}. Current amount of available slots is: ${menuSlots.length}`,
+                    );
+                }
+
+                applyUpdates(
+                    f(
+                        null,
+                        {
+                            "data-id": i,
+                            "data-uID": menuItem.uID,
+                            "data-name": menuItem.name,
+                            "data-desc": menuItem.desc,
+                            "data-cost": menuItem.cost,
+                            "data-price": menuItem.price,
+                        },
+                        f("div", {
+                            style: { backgroundImage: menuItemTexture },
+                        }),
+                    ),
+                    menuItemSlot,
+                );
+            }
+        });
     },
 };

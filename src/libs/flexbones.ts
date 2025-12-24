@@ -273,7 +273,7 @@ export function setToContent(xElement: XElement, context: XContext): void {
  *                            which means it will only apply to the defined styles and any other pre-existing
  *                            one will be left untouched. If you want to remove a style, set it to null or an empty
  *                            string, as defined in https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style.
- * - {@link XElement.children} - If children array is defined we will remove all childrens from the context and
+ * - {@link XElement.children} - If children array is defined we will remove all children from the context and
  *                               replace them with the new ones. This can be used to remove all children from the context
  *                               by setting it to an empty array.
  * - {@link XElement.attrs} - When provided will update the corresponding attribute with the new value. The update is

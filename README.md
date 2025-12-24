@@ -18,6 +18,12 @@ conventional frameworks and libraries mindset.
 It shouldn't be taken as a reflection of best practices or modern standards (although I'm planning to bring a lot of that
 slowly into the codebase too) as this wouldn't reflect any approach I would take in a real world production project.
 
+## Starting the game
+
+### Development
+
+To start up the game in development run `vite` in the console. This will start a local server to host the game and compile it.
+
 ## Licensing information
 
 > This program is free software: you can redistribute it and/or modify

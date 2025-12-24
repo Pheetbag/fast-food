@@ -2,7 +2,7 @@
 
 import { config } from "../master.config";
 import { textures } from "./textures";
-import { ClientTexturesEnum } from "../components/client";
+import { ClientTexturesEnum } from "../components/client.component";
 import { randomNumber } from "../utils/random-number";
 import { getUniqueId } from "../utils/get-unique-id";
 

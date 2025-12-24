@@ -375,6 +375,8 @@ export function animateAllComputed() {
         // remove un-schedule animatables
         // FIXME: implement a nextTick() function so this could be schedule
         //      in the proper place (onfinish callback).
+        //      no-one is setting isRunning to false, so we should inspect the actual
+        //      need of this
         if (!animatable.isRunning) {
             runningAnimatables.delete(id);
         }
@@ -382,8 +384,6 @@ export function animateAllComputed() {
         if (!animatable.animation.hasPendingComputedKeyframes()) continue;
         for (const [offset, computedKeyframes] of animatable.animation
             .computedKeyframes) {
-            // if offset is equal or over current progress of the native animation
-            // run the keyframes for that offset.
             if (
                 offset <=
                 // @ts-expect-error overallProgress is an actual available attr on the WAAPI spec

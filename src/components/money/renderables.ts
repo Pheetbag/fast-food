@@ -1,9 +1,15 @@
-import { createRenderable, type StateChangeSnapshot } from "../libs/render-x";
-import { createAnimatable, createStatefulAnimation } from "../libs/animate-x";
+import {
+    type CreateRenderable,
+    type StateChangeSnapshot,
+} from "../../libs/render-x";
+import {
+    createAnimatable,
+    createStatefulAnimation,
+} from "../../libs/animate-x";
 
 // TODO: a renderable without a matching component? keep that in mind if renderables will be integrated
 //       to the component itself.
-export function loadRenderablesMoney(): void {
+export function loadRenderables(createRenderable: CreateRenderable): void {
     createRenderable(
         "money",
         () => game.state.player.money,

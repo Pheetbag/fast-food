@@ -3,37 +3,37 @@
 //This set the default state of all the print objects.
 
 function resetEngine_printObjects(heart, star, name, cash) {
-  function printObjects_resetHeart() {
-    printState_heart = 6;
-  }
+    function printObjects_resetHeart() {
+        printState_heart = 6;
+    }
 
-  if (heart) {
-    printObjects_resetHeart();
-  }
+    if (heart) {
+        printObjects_resetHeart();
+    }
 
-  function printObjects_resetStar() {
-    printState_star = 6;
-  }
+    function printObjects_resetStar() {
+        printState_star = 6;
+    }
 
-  if (star) {
-    printObjects_resetStar();
-  }
+    if (star) {
+        printObjects_resetStar();
+    }
 
-  function printObjects_resetName() {
-    printState_name = "Unknown";
-  }
+    function printObjects_resetName() {
+        printState_name = "Unknown";
+    }
 
-  if (name) {
-    printObjects_resetName();
-  }
+    if (name) {
+        printObjects_resetName();
+    }
 
-  function printObjects_resetCash() {
-    printState_cash = 1000;
-  }
+    function printObjects_resetCash() {
+        printState_cash = 1000;
+    }
 
-  if (cash) {
-    printObjects_resetCash();
-  }
+    if (cash) {
+        printObjects_resetCash();
+    }
 }
 
 function resetEngine_selectionHandler() {}
