@@ -59,6 +59,8 @@ function createRenderable<T>(
     return renderable;
 }
 
+type CreateRenderable = typeof createRenderable;
+
 /**
  * Check if the state has changed compared to the last rendered state.
  * If it has, call the render function and update the rendered state.
@@ -107,4 +109,10 @@ function renderAll() {
     });
 }
 
-export { renderAll, createRenderable, type Renderable, type RenderFn };
+export {
+    renderAll,
+    createRenderable,
+    type CreateRenderable,
+    type Renderable,
+    type RenderFn,
+};

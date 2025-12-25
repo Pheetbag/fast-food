@@ -1,62 +1,62 @@
 /* SHOP WINDOW FORMATING */
 #windowShop {
-  background-color: rgba(0, 13, 19, 0.9);
-  z-index: 2;
-  display: none;
+    background-color: rgba(0, 13, 19, 0.9);
+    z-index: 2;
+    display: none;
 }
 
 .shopContainer {
-  background: #278eb3;
-  background: radial-gradient(ellipse at center, #278eb3 0%, #00425c 100%);
-  border: 1px solid #5597ad;
+    background: #278eb3;
+    background: radial-gradient(ellipse at center, #278eb3 0%, #00425c 100%);
+    border: 1px solid #5597ad;
 
-  margin: auto;
+    margin: auto;
 
-  height: 100%;
-  width: 70%;
-  max-width: 700px;
-  min-width: 530px;
+    height: 100%;
+    width: 70%;
+    max-width: 700px;
+    min-width: 530px;
 }
 
 .shopHeader {
-  display: flex;
+    display: flex;
 }
 
 .shopHeader > div {
-  flex: 1;
-  align-self: center;
+    flex: 1;
+    align-self: center;
 }
 
 .shopMoney {
-  padding-left: 30px;
+    padding-left: 30px;
 
-  font-size: 25px;
-  font-family: sans-serif;
-  font-weight: bold;
+    font-size: 25px;
+    font-family: sans-serif;
+    font-weight: bold;
 
-  width: 130px;
-  height: 30px;
+    width: 130px;
+    height: 30px;
 
-  background-image: url(/assets/ui_ico/coin.png);
-  background-position: left;
-  background-size: contain;
-  background-repeat: no-repeat;
+    background-image: url(/assets/ui_ico/coin.png);
+    background-position: left;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .titleShop {
-  text-align: center;
+    text-align: center;
 
-  background-image: url(/assets/various/titleBanner.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+    background-image: url(/assets/various/titleBanner.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 
-  height: 75px;
+    height: 75px;
 
-  padding-top: 15px;
+    padding-top: 15px;
 }
 
 .shopIconBar {
-  text-align: right;
-  padding-right: 15px;
+    text-align: right;
+    padding-right: 15px;
 }

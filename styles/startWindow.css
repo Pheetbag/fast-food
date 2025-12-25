@@ -1,112 +1,112 @@
 /* START WINDOW FORMATING */
 #windowStart {
-  display: none;
-  background-color: #000d13;
-  z-index: 3;
+    display: none;
+    background-color: #000d13;
+    z-index: 3;
 }
 
 .startPanel {
-  background: #278eb3;
-  background: radial-gradient(ellipse at center, #278eb3 0%, #00425c 100%);
-  border: 1px solid #5597ad;
+    background: #278eb3;
+    background: radial-gradient(ellipse at center, #278eb3 0%, #00425c 100%);
+    border: 1px solid #5597ad;
 
-  display: block;
+    display: block;
 
-  width: 70%;
-  max-width: 700px;
-  min-width: 530px;
-  height: 100%;
+    width: 70%;
+    max-width: 700px;
+    min-width: 530px;
+    height: 100%;
 
-  margin: auto;
+    margin: auto;
 
-  text-align: center;
+    text-align: center;
 }
 
 .gameLogo {
-  width: 294px;
-  height: 128px;
+    width: 294px;
+    height: 128px;
 
-  margin: 20px auto;
+    margin: 20px auto;
 
-  background-image: url(/assets/logo/logo_bnr.png);
+    background-image: url(/assets/logo/logo_bnr.png);
 }
 
 .inputUsername {
-  color: white;
-  background-color: #00425c8f;
+    color: white;
+    background-color: #00425c8f;
 
-  border: 1px solid #5597ad;
-  border-radius: 7px;
-  padding: 8px;
+    border: 1px solid #5597ad;
+    border-radius: 7px;
+    padding: 8px;
 
-  width: 250px;
+    width: 250px;
 
-  font-weight: 700;
-  font-family: sans-serif;
+    font-weight: 700;
+    font-family: sans-serif;
 
-  box-shadow: 0px 0px 20px 1px rgba(153, 205, 250, 0.2);
+    box-shadow: 0px 0px 20px 1px rgba(153, 205, 250, 0.2);
 }
 
 .inputUsername::placeholder {
-  color: rgba(255, 255, 255, 0.452);
-  text-align: center;
+    color: rgba(255, 255, 255, 0.452);
+    text-align: center;
 }
 
 .division {
-  border: 1px solid #0d6086a6;
-  width: 70%;
-  margin: 20px auto 0px;
+    border: 1px solid #0d6086a6;
+    width: 70%;
+    margin: 20px auto 0px;
 }
 
 .instructionBox {
-  font-family: "Roboto", sans-serif;
-  margin: 0px 40px 15px;
-  padding: 10px;
-  padding-top: 0px;
-  max-height: 50%;
-  overflow: scroll;
-  overflow-x: hidden;
+    font-family: "Roboto", sans-serif;
+    margin: 0px 40px 15px;
+    padding: 10px;
+    padding-top: 0px;
+    max-height: 50%;
+    overflow: scroll;
+    overflow-x: hidden;
 }
 
 .bgDecoration {
-  width: 69.7%;
-  max-width: 698px;
-  min-width: 528px;
-  height: 210px;
+    width: 69.7%;
+    max-width: 698px;
+    min-width: 528px;
+    height: 210px;
 
-  background-image: url(/assets/various/startPage_bgDecoration.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position-y: bottom;
+    background-image: url(/assets/various/startPage_bgDecoration.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-y: bottom;
 
-  position: absolute;
-  bottom: 0px;
+    position: absolute;
+    bottom: 0px;
 }
 
 .startGameSec {
-  position: absolute;
-  bottom: 0px;
+    position: absolute;
+    bottom: 0px;
 
-  width: 69.8%;
-  max-width: 698px;
-  min-width: 528px;
+    width: 69.8%;
+    max-width: 698px;
+    min-width: 528px;
 }
 
 .btn-startGame {
-  height: 55px;
-  width: 250px;
-  font-family: "Erica One", cursive;
-  margin: 45px auto;
+    height: 55px;
+    width: 250px;
+    font-family: "Erica One", cursive;
+    margin: 45px auto;
 }
 
 .btn-green {
-  box-shadow: 0px 0px 35px 10px rgba(223, 255, 212, 0.34);
+    box-shadow: 0px 0px 35px 10px rgba(223, 255, 212, 0.34);
 }
 
 .btn-gray {
-  text-shadow:
-    -2px -2px 1px #111111,
-    2px 2px 1px #111,
-    -2px 2px 1px #111,
-    2px -2px 1px #111;
+    text-shadow:
+        -2px -2px 1px #111111,
+        2px 2px 1px #111,
+        -2px 2px 1px #111,
+        2px -2px 1px #111;
 }

@@ -22,7 +22,9 @@ function Game() {
 
     this.assets = [];
 
-    //TODO Is important to note that this have to be moved from here, the use of components is deprecated in the code, so now we have to create a way to refers to all components  (this is deprecated because the system now have assets for it) But right now it do not support the components or similar (also check where components are used)
+    //TODO Is important to note that this have to be moved from here, the use of components is deprecated in the code,
+    // so now we have to create a way to refers to all components  (this is deprecated because the system now have assets for it)
+    // But right now it do not support the components or similar (also check where components are used)
 
     this.component = new Component();
 
@@ -42,25 +44,12 @@ function Scene() {
     };
 
     this.setup = function () {
-        let xMap = [
-            { x: "div" },
-            { x: "div" },
-            { x: "div" },
-            { x: "div" },
-            { x: "div" },
-            { x: "div" },
-        ];
-        flexbones(xMap)
-            .select(".ff-gamePrint-hearts, .ff-gamePrint-stars")
-            .bind();
-
-        xMap = [{ x: "div" }, { x: "span" }];
-        flexbones(xMap).select(".ff-gamePrint-money").bind();
-
+        return;
         let reactTree = react("click").do();
         let context = paint.getContext("ff-gameMenu-slot");
 
         for (let i = 0; i < context.length; i++) {
+            console.log("parsing menu items");
             //---CLICK
 
             reactive("mousedown")
